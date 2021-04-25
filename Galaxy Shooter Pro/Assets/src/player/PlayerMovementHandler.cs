@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine; // MonoBehaviour, Vector3, Time, Input
+using UnityEngine; 
 
-namespace vio.spaceshooter
+namespace vio.spaceshooter.player
 {
-  public class Player : MonoBehaviour
+  public class PlayerMovementHandler
   {
 
     private const float DEFAULT_PLAYER_SPEED = 15f;
@@ -19,24 +19,17 @@ namespace vio.spaceshooter
     private float newX;
     private float newY;
 
-    private const float TRANSITION_LEFT_X = -8.25f;
-    private const float TRANSITION_RIGHT_X = 8.25f;
-
-    private GameObject fakePlayer;
-    // Start is called before the first frame update
-    void Start()
+    private readonly Player player;
+    private readonly FakePlayerBehaviourHandler fakePlayerBehaviourHandler;
+    public PlayerMovementHandler(Player player, FakePlayerBehaviourHandler fakePlayerBehaviourHandler)
     {
-      this.transform.position = new Vector3(0, 0, 0);
-      fakePlayer = GameObject.Find("Player_Fake");
-      this.hideFakePlayer();
-    }
-    private void hideFakePlayer()
-    {
-      fakePlayer.transform.position = new Vector3(0, 0, -20);
+      this.player = player;
+      this.fakePlayerBehaviourHandler = fakePlayerBehaviourHandler;
+      player.transform.position = new Vector3(0, 0, 0);
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
       this.movePlayer();
     }
@@ -49,7 +42,7 @@ namespace vio.spaceshooter
 
     private void applyPlayerInput()
     {
-      this.transform.Translate(
+      this.player.transform.Translate(
                   this.getDirectionInputVector()
                   * this.getPosibleDistanceMovedSinceLastFrame()
               );
@@ -81,17 +74,17 @@ namespace vio.spaceshooter
 
       if (applyRestrictionVector)
       {
-        this.transform.position = new Vector3(newX, newY);
+        this.player.transform.position = new Vector3(newX, newY);
       }
 
-      this.transformFakePlayerForWrapping();
+      this.fakePlayerBehaviourHandler.Update(this.player.transform.position);
     }
 
     private void resetBoundingAreaVectorDetails()
     {
       this.applyRestrictionVector = false;
-      this.newX = this.transform.position.x;
-      this.newY = this.transform.position.y;
+      this.newX = this.player.transform.position.x;
+      this.newY = this.player.transform.position.y;
     }
 
     private void processYBoundingBoxRestrictions()
@@ -110,12 +103,12 @@ namespace vio.spaceshooter
 
     private bool isPlayerAtYUpperBoundry()
     {
-      return this.transform.position.y > MAX_Y_POS;
+      return this.player.transform.position.y > MAX_Y_POS;
     }
 
     private bool isPlayerAtYLowerBoundry()
     {
-      return this.transform.position.y < MIN_Y_POS;
+      return this.player.transform.position.y < MIN_Y_POS;
     }
 
     private void processXWrappingBoundingBoxRestrictions()
@@ -131,7 +124,7 @@ namespace vio.spaceshooter
     }
     private bool isPlayerFarEnoughToTheLeftToTeleportRight()
     {
-      return this.transform.position.x < MIN_X_POS;
+      return this.player.transform.position.x < MIN_X_POS;
     }
     private void teleportPlayerToRight()
     {
@@ -141,7 +134,7 @@ namespace vio.spaceshooter
 
     private bool isPlayerFarEnoughToTheRightToTeleportLeft()
     {
-      return this.transform.position.x > MAX_X_POS;
+      return this.player.transform.position.x > MAX_X_POS;
     }
 
     private void teleportPlayerLeft()
@@ -150,59 +143,6 @@ namespace vio.spaceshooter
       this.newX = MIN_X_POS;
     }
 
-    private void transformFakePlayerForWrapping()
-    {
-      if (this.isPlayerMovingOverLeftWrappingThreshold())
-      {
-        this.showFakePlayerToRight();
-      }
-      else if (isPlayerMovingOverRightWrappingThreshold())
-      {
-        this.showFakePlayerToLeft();
-      }
-      else
-      {
-        this.hideFakePlayer();
-      }
-    }
-
-    private bool isPlayerMovingOverLeftWrappingThreshold()
-    {
-      return this.transform.position.x <= TRANSITION_LEFT_X;
-    }
-
-    private void showFakePlayerToRight()
-    {
-      fakePlayer.transform.position = new Vector3(
-        this.calculateFakePlayerXPositionToTheRight(),
-        transform.position.y,
-        0
-      );
-    }
-
-    private float calculateFakePlayerXPositionToTheRight()
-    {
-      return this.transform.position.x + 19.7f;
-    }
-
-    private bool isPlayerMovingOverRightWrappingThreshold()
-    {
-      return this.transform.position.x >= TRANSITION_RIGHT_X;
-    }
-
-    private void showFakePlayerToLeft()
-    {
-      fakePlayer.transform.position = new Vector3(
-        calculateFakePlayerXPositionToTheLeft(),
-        transform.position.y,
-        0
-      );
-    }
-
-    private float calculateFakePlayerXPositionToTheLeft()
-    {
-      return this.transform.position.x - 19.6f;
-    }
   }
 
 }
