@@ -7,7 +7,6 @@ namespace vio.spaceshooter.player
 {
   public class Player : MonoBehaviour
   {
-
     private const float DEFAULT_PLAYER_SPEED = 15f;
 
     private const float MAX_Y_POS = 8f;
@@ -15,14 +14,16 @@ namespace vio.spaceshooter.player
     private const float MAX_X_POS = 10.00f;
     private const float MIN_X_POS = -9.75f;
 
-    private bool applyRestrictionVector = false;
     private float newX;
     private float newY;
 
     private FakePlayerBehaviourHandler fakePlayerBehaviourHandler;
 
     private PlayerMovementHandler playerMovementHandler;
+    private PlayerActionsHandler playerActionHandler;
 
+    [SerializeField]
+    private GameObject laser;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,12 +35,17 @@ namespace vio.spaceshooter.player
             GameObject.Find("Player_Fake").transform
           )
         );
+      this.playerActionHandler = new PlayerActionsHandler(
+        this,
+        this.laser
+      );
     }
 
     // Update is called once per frame
     void Update()
     {
       this.playerMovementHandler.Update();
+      this.playerActionHandler.Update();
     }
   }
 

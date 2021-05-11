@@ -403,6 +403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5919b1e28d9cbf845b52f8557c7f8bbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  laser: {fileID: 5993967550363337925, guid: cd2909d1f0a61f94b8ca556f7b2bcf51, type: 3}
 --- !u!1 &1695853526
 GameObject:
   m_ObjectHideFlags: 0

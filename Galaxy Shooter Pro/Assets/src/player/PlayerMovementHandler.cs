@@ -72,9 +72,9 @@ namespace vio.spaceshooter.player
       this.processYBoundingBoxRestrictions();
       this.processXWrappingBoundingBoxRestrictions();
 
-      if (applyRestrictionVector)
+      if (this.applyRestrictionVector)
       {
-        this.player.transform.position = new Vector3(newX, newY);
+        this.player.transform.position = new Vector3(this.newX, this.newY);
       }
 
       this.fakePlayerBehaviourHandler.Update(this.player.transform.position);
