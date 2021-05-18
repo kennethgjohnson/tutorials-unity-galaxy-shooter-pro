@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine; // MonoBehaviour, Vector3, Time, Input
+using vio.spaceshooter.player.weapon;
 
 namespace vio.spaceshooter.player
 {
@@ -28,6 +29,9 @@ namespace vio.spaceshooter.player
 
     [SerializeField]
     private GameObject laser;
+
+    private PlayerWeapon weapon;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,10 +46,8 @@ namespace vio.spaceshooter.player
             GameObject.Find("Player_Fake").transform
           )
         );
-      this.playerActionHandler = new PlayerActionsHandler(
-        this,
-        this.laser
-      );      
+      this.playerActionHandler = new PlayerActionsHandler(this);
+      this.weapon = new LaserCannon(this,this.laser);
     }
 
     // Update is called once per frame
@@ -74,6 +76,11 @@ namespace vio.spaceshooter.player
     {
       
       spawnManager.stopSpawning();
+    }
+
+    public PlayerWeapon GetWeapon()
+    {
+      return this.weapon;
     }
   }
 

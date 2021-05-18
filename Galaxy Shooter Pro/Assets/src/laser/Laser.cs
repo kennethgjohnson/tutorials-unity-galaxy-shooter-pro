@@ -21,8 +21,7 @@ public class Laser : MonoBehaviour
     }
   }
 
-
-  private void applyLaserMovement()
+    private void applyLaserMovement()
   {
     this.transform.Translate(
                 Vector3.up
