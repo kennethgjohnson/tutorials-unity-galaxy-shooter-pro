@@ -6,7 +6,7 @@ using vio.spaceshooter.player;
 
 public class Enemy : MonoBehaviour
 {
-  private const float DEFAULT_ENEMY_SPEED = 7f;
+  private const float DEFAULT_ENEMY_SPEED = 4f;
   private const float MIN_Y_POS = -2.5f;
   private const float MAX_Y_POS = 12f;
   private const float MAX_X_POS = 10.00f;
@@ -41,7 +41,7 @@ public class Enemy : MonoBehaviour
     this.transform.position=new Vector3(UnityEngine.Random.Range(MIN_X_POS, MAX_X_POS), MAX_Y_POS);
   }
 
-  private void OnTriggerEnter(Collider other)
+  private void OnTriggerEnter2D(Collider2D other)
   {
     switch(other.tag)
     {
@@ -55,13 +55,13 @@ public class Enemy : MonoBehaviour
     }
     
   }
-private void laserHit(Collider other)
+private void laserHit(Collider2D other)
   {
     Destroy(other.gameObject);
     Destroy(this.gameObject);
   }
 
-  private void playerHit(Collider other)
+  private void playerHit(Collider2D other)
   {
     Player player = other.GetComponent<Player>();
     if (player != null) { 

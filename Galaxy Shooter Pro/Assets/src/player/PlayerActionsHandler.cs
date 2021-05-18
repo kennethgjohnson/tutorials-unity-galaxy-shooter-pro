@@ -7,6 +7,7 @@ namespace vio.spaceshooter.player
 {
   class PlayerActionsHandler
   {
+    private const float LASER_STARTING_OFFSET = 1.05f;
     private float rateOfFire = 300f;
     private float nextFireTime = 0f;
     private readonly Player player;
@@ -41,7 +42,7 @@ namespace vio.spaceshooter.player
     {
       MonoBehaviour.Instantiate(
                 this.laser,
-                this.player.transform.position + Vector3.up * 0.8f,
+                this.player.transform.position + Vector3.up * LASER_STARTING_OFFSET,
                 Quaternion.identity
               );
     }
