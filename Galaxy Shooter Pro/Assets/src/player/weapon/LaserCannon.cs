@@ -7,8 +7,8 @@ namespace vio.spaceshooter.player.weapon
 {
   public class LaserCannon : PlayerWeapon
   {
-    private const float LASER_STARTING_OFFSET = 1.05f;
-    private float rateOfFire = 150f;
+    protected float LASER_STARTING_OFFSET = 1.05f;
+    protected float rateOfFire = 150f;
     private float nextFireTime = 0f;
 
     public LaserCannon(Player player, GameObject weaponPrefab) : base(player,weaponPrefab)

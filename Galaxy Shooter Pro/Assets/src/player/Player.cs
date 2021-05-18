@@ -30,6 +30,9 @@ namespace vio.spaceshooter.player
     [SerializeField]
     private GameObject laser;
 
+    [SerializeField]
+    private GameObject tripleShot;
+
     private PlayerWeapon weapon;
 
     // Start is called before the first frame update
@@ -47,7 +50,9 @@ namespace vio.spaceshooter.player
           )
         );
       this.playerActionHandler = new PlayerActionsHandler(this);
-      this.weapon = new LaserCannon(this,this.laser);
+      // this.weapon = new LaserCannon(this,this.laser);
+      // this.weapon = new TripleShotLaserCannon(this, this.tripleShot);
+      this.weapon = new LaserCannonFast(this, this.laser);
     }
 
     // Update is called once per frame
