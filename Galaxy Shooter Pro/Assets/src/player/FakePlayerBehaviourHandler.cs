@@ -16,10 +16,10 @@ namespace vio.spaceshooter.player
     public FakePlayerBehaviourHandler(Transform fakePlayerTransformComponent)
     {
       this.fakePlayerTransformComponent = fakePlayerTransformComponent;
-      this.hideFakePlayer();
+      this.HideFakePlayer();
     }
 
-    private void hideFakePlayer()
+    public void HideFakePlayer()
     {
       this.fakePlayerTransformComponent.transform.position = new Vector3(0, 0, -20);
     }
@@ -38,7 +38,7 @@ namespace vio.spaceshooter.player
       }
       else
       {
-        this.hideFakePlayer();
+        this.HideFakePlayer();
       }
     }
 

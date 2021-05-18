@@ -143,6 +143,11 @@ namespace vio.spaceshooter.player
       this.newX = MIN_X_POS;
     }
 
+    public void Reset()
+    {
+      this.fakePlayerBehaviourHandler.HideFakePlayer();
+    }
+
   }
 
 }

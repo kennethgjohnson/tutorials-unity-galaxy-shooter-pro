@@ -22,12 +22,19 @@ namespace vio.spaceshooter.player
     private PlayerMovementHandler playerMovementHandler;
     private PlayerActionsHandler playerActionHandler;
 
+    private int health = 2;
+
+    SpawnManager spawnManager;
+
     [SerializeField]
     private GameObject laser;
     // Start is called before the first frame update
     void Start()
     {
       this.transform.position = new Vector3(0, 0, 0);
+
+      this.spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+
       this.playerMovementHandler
         = new PlayerMovementHandler(
           this,
@@ -38,7 +45,7 @@ namespace vio.spaceshooter.player
       this.playerActionHandler = new PlayerActionsHandler(
         this,
         this.laser
-      );
+      );      
     }
 
     // Update is called once per frame
@@ -46,6 +53,27 @@ namespace vio.spaceshooter.player
     {
       this.playerMovementHandler.Update();
       this.playerActionHandler.Update();
+    }
+
+    public void Damage(GameObject source, int damageAmount)
+    {
+      this.health -= damageAmount;
+      if (this.health<=0) {
+        this.killPlayer();
+      }
+    }
+
+    private void killPlayer()
+    {
+      this.playerMovementHandler.Reset();
+      this.OnPlayerDeath();
+      Destroy(this.gameObject);
+    }
+
+    private void OnPlayerDeath()
+    {
+      
+      spawnManager.stopSpawning();
     }
   }
 
