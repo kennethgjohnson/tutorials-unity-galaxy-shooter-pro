@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace vio.spaceshooter.player.weapon
 {
@@ -9,9 +6,11 @@ namespace vio.spaceshooter.player.weapon
   {
     protected GameObject weaponPrefab;
     protected Player player;
+    protected PlayerWeapon previousWeapon;
     public PlayerWeapon(Player player, GameObject weaponPrefab)
     {
       this.player = player;
+      this.previousWeapon = player.GetWeapon();
       this.weaponPrefab = weaponPrefab;      
     }
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace vio.spaceshooter.player
 {
@@ -12,8 +9,6 @@ namespace vio.spaceshooter.player
     {
       this.player = player;
     }
-
-    // Update is called once per frame
     public void Update()
     {
       if (this.isPlayerFiring())

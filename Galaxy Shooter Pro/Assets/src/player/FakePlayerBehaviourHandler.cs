@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace vio.spaceshooter.player
 {
@@ -24,7 +21,6 @@ namespace vio.spaceshooter.player
       this.fakePlayerTransformComponent.transform.position = new Vector3(0, 0, -20);
     }
 
-    // Update is called once per frame
     public void Update(Vector3 realPlayerPosition)
     {
       this.realPlayerPosition = realPlayerPosition;

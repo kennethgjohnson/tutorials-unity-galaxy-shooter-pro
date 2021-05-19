@@ -43,4 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98746d461206a8c4cba8f2ae5a8a5a97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 6594108554600338984, guid: 4065fa9ae1f9c3945837127b1f50d3b7, type: 3}
+  enemyPrefab: {fileID: 6594108554600338984, guid: 4065fa9ae1f9c3945837127b1f50d3b7,
+    type: 3}
+  tripleShotPowerupPrefab: {fileID: 4823963786125154364, guid: f730a9b49c9e85f449416a70f079ff1f,
+    type: 3}

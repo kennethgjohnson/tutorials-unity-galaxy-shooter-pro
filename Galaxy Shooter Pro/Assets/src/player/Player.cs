@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine; // MonoBehaviour, Vector3, Time, Input
+﻿using UnityEngine;
 using vio.spaceshooter.player.weapon;
+using vio.spaceshooter.spawnmanager;
 
 namespace vio.spaceshooter.player
 {
   public class Player : MonoBehaviour
   {
-    private const float DEFAULT_PLAYER_SPEED = 15f;
+    private const float DEFAULT_PLAYER_SPEED = 10f;
 
     private const float MAX_Y_POS = 8f;
     private const float MIN_Y_POS = -0.8f;
@@ -30,12 +28,8 @@ namespace vio.spaceshooter.player
     [SerializeField]
     private GameObject laser;
 
-    [SerializeField]
-    private GameObject tripleShot;
-
     private PlayerWeapon weapon;
 
-    // Start is called before the first frame update
     void Start()
     {
       this.transform.position = new Vector3(0, 0, 0);
@@ -50,12 +44,9 @@ namespace vio.spaceshooter.player
           )
         );
       this.playerActionHandler = new PlayerActionsHandler(this);
-      // this.weapon = new LaserCannon(this,this.laser);
-      // this.weapon = new TripleShotLaserCannon(this, this.tripleShot);
-      this.weapon = new LaserCannonFast(this, this.laser);
+      this.weapon = new LaserCannon(this, this.laser);
     }
 
-    // Update is called once per frame
     void Update()
     {
       this.playerMovementHandler.Update();
@@ -86,6 +77,10 @@ namespace vio.spaceshooter.player
     public PlayerWeapon GetWeapon()
     {
       return this.weapon;
+    }
+    public void SetWeapon(PlayerWeapon weapon)
+    {
+      this.weapon = weapon;
     }
   }
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine; 
+﻿using UnityEngine; 
 
 namespace vio.spaceshooter.player
 {
@@ -28,7 +25,6 @@ namespace vio.spaceshooter.player
       player.transform.position = new Vector3(0, 0, 0);
     }
 
-    // Update is called once per frame
     public void Update()
     {
       this.movePlayer();
