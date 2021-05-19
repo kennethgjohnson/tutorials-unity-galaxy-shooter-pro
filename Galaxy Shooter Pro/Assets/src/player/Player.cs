@@ -6,7 +6,7 @@ namespace vio.spaceshooter.player
 {
   public class Player : MonoBehaviour
   {
-    private const float DEFAULT_PLAYER_SPEED = 10f;
+    private const float DEFAULT_PLAYER_SPEED = 7f;
 
     private const float MAX_Y_POS = 8f;
     private const float MIN_Y_POS = -0.8f;
