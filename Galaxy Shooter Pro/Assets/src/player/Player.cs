@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using vio.spaceshooter.player.weapon;
 using vio.spaceshooter.spawnmanager;
 
@@ -82,6 +83,17 @@ namespace vio.spaceshooter.player
     {
       this.weapon = weapon;
     }
+
+    public void BoostSpeed(float newSpeed)
+    {
+      this.playerMovementHandler.SetPlayerSpeed(newSpeed);
+    }
+
+    public void ResetSpeed()
+    {
+      this.playerMovementHandler.ResetPlayerSpeed();
+    }
+
   }
 
 }

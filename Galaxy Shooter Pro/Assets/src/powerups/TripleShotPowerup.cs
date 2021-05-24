@@ -1,69 +1,32 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 using vio.spaceshooter.player;
 using vio.spaceshooter.player.weapon;
 
 namespace vio.spaceshooter.powerups {
-  public class TripleShotPowerup : MonoBehaviour
+  public class TripleShotPowerup : Powerup
   {
     [SerializeField]
     private GameObject weaponPrefab;
+    protected float CANNON_DURABILITY_DURATION_SECONDS = 5f;
 
-    private const float DEFAULT_SPEED = 5f;
-    private const float MIN_Y_POS = -2.5f;
+    private Player player = null;
+    private PlayerWeapon playerOriginalWeapon = null;
 
-    void Update()
+    protected override void applyPowerupToPlayer(Player player)
     {
-      this.applyMovement();
-      if (this.isOutOfBoundry())
-      {
-        this.removeObject();
-      }
+      this.player = player;
+      this.playerOriginalWeapon = player.GetWeapon();
+      player.SetWeapon(new TripleShotLaserCannon(player, this.weaponPrefab));
+      player.StartCoroutine(PowerdownRoutine());
     }
 
-    private void applyMovement()
+    IEnumerator PowerdownRoutine()
     {
-      this.transform.Translate(
-                  Vector3.down
-                  * this.getPosibleDistanceMovedSinceLastFrame()
-              );
-    }
-
-    private float getPosibleDistanceMovedSinceLastFrame()
-    {
-      return DEFAULT_SPEED * Time.deltaTime;
-    }
-
-    private bool isOutOfBoundry()
-    {
-      return (this.transform.position.y < MIN_Y_POS);
-    }
-
-    private void removeObject()
-    {
-      Destroy(this.gameObject);
-    }
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-      switch (other.tag)
-      {
-        case "Player":
-          this.givePlayerTripleShot(other);
-          break;
-      }
-
-    }
-
-    private void givePlayerTripleShot(Collider2D other)
-    {
-      Player player = other.GetComponent<Player>();
-      if (player != null)
-      {
-        player.SetWeapon(new TripleShotLaserCannon(player, this.weaponPrefab));
-      }
-      Destroy(this.gameObject);
+      yield return new WaitForSeconds(CANNON_DURABILITY_DURATION_SECONDS);
+      this.player.SetWeapon(this.playerOriginalWeapon);
+      this.player = null;
+      this.playerOriginalWeapon = null;
     }
   }
 }

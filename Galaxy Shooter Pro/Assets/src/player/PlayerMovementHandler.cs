@@ -6,7 +6,7 @@ namespace vio.spaceshooter.player
   {
 
     private const float DEFAULT_PLAYER_SPEED = 15f;
-
+    private float playerSpeed;
     private const float MAX_Y_POS = 8f;
     private const float MIN_Y_POS = -0.8f;
     private const float MAX_X_POS = 10.00f;
@@ -23,6 +23,7 @@ namespace vio.spaceshooter.player
       this.player = player;
       this.fakePlayerBehaviourHandler = fakePlayerBehaviourHandler;
       player.transform.position = new Vector3(0, 0, 0);
+      playerSpeed = DEFAULT_PLAYER_SPEED;
     }
 
     public void Update()
@@ -57,10 +58,8 @@ namespace vio.spaceshooter.player
 
     private float getPosibleDistanceMovedSinceLastFrame()
     {
-      return DEFAULT_PLAYER_SPEED * Time.deltaTime;
+      return playerSpeed * Time.deltaTime;
     }
-
-
 
     private void applyPlayerPositionRestrictions()
     {
@@ -144,6 +143,15 @@ namespace vio.spaceshooter.player
       this.fakePlayerBehaviourHandler.HideFakePlayer();
     }
 
+    public void SetPlayerSpeed(float speed)
+    {
+      this.playerSpeed = speed;
+    }
+
+    public void ResetPlayerSpeed()
+    {
+      this.playerSpeed = DEFAULT_PLAYER_SPEED;
+    }
   }
 
 }

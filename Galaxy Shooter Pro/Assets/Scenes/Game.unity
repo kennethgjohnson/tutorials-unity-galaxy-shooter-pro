@@ -211,6 +211,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -4673831704299990059, guid: 7298fac527cbccb469dc9a6fabafa4dc,
+        type: 3}
+      propertyPath: speedPowerupPrefab
+      value: 
+      objectReference: {fileID: 2404287283728676281, guid: 98d0726fedeafde41b30bd22c1f0a816,
+        type: 3}
+    - target: {fileID: -4673831704299990059, guid: 7298fac527cbccb469dc9a6fabafa4dc,
+        type: 3}
+      propertyPath: shieldPowerupPrefab
+      value: 
+      objectReference: {fileID: 2981948275079777433, guid: 0733a27c975897247bbcd91675dbe723,
+        type: 3}
     - target: {fileID: 1113232569286517026, guid: 7298fac527cbccb469dc9a6fabafa4dc,
         type: 3}
       propertyPath: m_RootOrder
