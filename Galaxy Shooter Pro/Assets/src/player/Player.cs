@@ -24,14 +24,12 @@ namespace vio.spaceshooter.player
     private PlayerMovementHandler playerMovementHandler;
     private PlayerActionsHandler playerActionHandler;
 
-    private int lives = 3;
-
     SpawnManager spawnManager;
 
     [SerializeField]
     private GameObject laser;
 
-[SerializeField]
+    [SerializeField]
     private GameObject playerShieldsEffect;
 
     private PlayerWeapon weapon;
