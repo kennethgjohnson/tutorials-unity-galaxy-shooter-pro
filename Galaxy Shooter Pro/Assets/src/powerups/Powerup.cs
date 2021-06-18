@@ -47,7 +47,6 @@ namespace vio.spaceshooter.powerups
           handlePlayerCollision(other);
           break;
       }
-
     }
 
     private void handlePlayerCollision(Collider2D other)

@@ -8,7 +8,7 @@ namespace vio.spaceshooter.powerups
   {
     protected override void applyPowerupToPlayer(Player player)
     {
-      Debug.Log("Shields powerup collected!");
+      player.EnableShields();
     }
   }
 }

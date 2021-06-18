@@ -50,6 +50,7 @@ namespace vio.spaceshooter.enemy
     }
     private void laserHit(Collider2D other)
     {
+      this.GetComponentInParent<Game>().IncreaseScore(10);
       Destroy(other.gameObject);
       Destroy(this.gameObject);
     }

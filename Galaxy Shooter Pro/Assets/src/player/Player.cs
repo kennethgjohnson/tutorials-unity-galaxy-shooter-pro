@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using vio.spaceshooter.player.weapon;
 using vio.spaceshooter.spawnmanager;
@@ -11,6 +12,7 @@ namespace vio.spaceshooter.player
 
     private const float MAX_Y_POS = 8f;
     private const float MIN_Y_POS = -0.8f;
+
     private const float MAX_X_POS = 10.00f;
     private const float MIN_X_POS = -9.75f;
 
@@ -22,14 +24,18 @@ namespace vio.spaceshooter.player
     private PlayerMovementHandler playerMovementHandler;
     private PlayerActionsHandler playerActionHandler;
 
-    private int health = 2;
+    private int lives = 3;
 
     SpawnManager spawnManager;
 
     [SerializeField]
     private GameObject laser;
 
+[SerializeField]
+    private GameObject playerShieldsEffect;
+
     private PlayerWeapon weapon;
+    private bool isShieldsActive = false;
 
     void Start()
     {
@@ -56,22 +62,29 @@ namespace vio.spaceshooter.player
 
     public void Damage(GameObject source, int damageAmount)
     {
-      this.health -= damageAmount;
-      if (this.health<=0) {
-        this.killPlayer();
+      if (this.isShieldsActive)
+      {
+        this.deactivateShields();
+      } else
+      {
+        this.takeDamage(damageAmount);
       }
     }
 
-    private void killPlayer()
+    private void takeDamage(int damageAmount)
+    {
+      this.GetComponentInParent<Game>().LoseLife();
+    }
+
+    public void KillPlayer()
     {
       this.playerMovementHandler.Reset();
       this.OnPlayerDeath();
-      Destroy(this.gameObject);
+      this.gameObject.SetActive(false);
     }
 
     private void OnPlayerDeath()
     {
-      
       spawnManager.stopSpawning();
     }
 
@@ -94,6 +107,18 @@ namespace vio.spaceshooter.player
       this.playerMovementHandler.ResetPlayerSpeed();
     }
 
+    public void EnableShields()
+    {
+      if (this.isShieldsActive) return;
+      this.isShieldsActive = true;
+      this.playerShieldsEffect.SetActive(true);
+    }
+
+    private void deactivateShields()
+    {
+      this.isShieldsActive = false;
+      this.playerShieldsEffect.SetActive(false);
+    }
   }
 
 }

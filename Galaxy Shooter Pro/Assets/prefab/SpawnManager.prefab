@@ -45,5 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 6594108554600338984, guid: 4065fa9ae1f9c3945837127b1f50d3b7,
     type: 3}
-  tripleShotPowerupPrefab: {fileID: 4823963786125154364, guid: f730a9b49c9e85f449416a70f079ff1f,
-    type: 3}
+  powerupPrefabs:
+  - {fileID: 4823963786125154364, guid: f730a9b49c9e85f449416a70f079ff1f, type: 3}
+  - {fileID: 2404287283728676281, guid: 98d0726fedeafde41b30bd22c1f0a816, type: 3}
+  - {fileID: 2981948275079777433, guid: 0733a27c975897247bbcd91675dbe723, type: 3}

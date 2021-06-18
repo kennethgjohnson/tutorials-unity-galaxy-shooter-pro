@@ -8,15 +8,9 @@ namespace vio.spaceshooter.spawnmanager
   {
     [SerializeField]
     private GameObject enemyPrefab;
-    
-    [SerializeField]
-    private GameObject tripleShotPowerupPrefab;
 
     [SerializeField]
-    private GameObject speedPowerupPrefab;
-
-    [SerializeField]
-    private GameObject shieldPowerupPrefab;
+    private GameObject[] powerupPrefabs;
 
     private const float MAX_Y_POS = 12f;
     private const float MAX_X_POS = 10.00f;
@@ -89,26 +83,8 @@ namespace vio.spaceshooter.spawnmanager
       while (this.isSpawningActive)
       {
         int powerupNumber = UnityEngine.Random.Range(0, 3);
-        GameObject powerupPrefab;
-        switch (powerupNumber)
-        {
-          case 0:
-            powerupPrefab = tripleShotPowerupPrefab;
-              break;
-
-          case 1:
-            powerupPrefab = speedPowerupPrefab;
-              break;
-          case 2:
-            powerupPrefab = shieldPowerupPrefab;
-              break;
-          default:
-            powerupPrefab = null;
-            break;
-        }
-        if (powerupPrefab != null) {
-          this.spawnPrefabTop(powerupPrefab, this.powerupContainer);
-        }
+        GameObject powerupPrefab = powerupPrefabs[powerupNumber];
+        this.spawnPrefabTop(powerupPrefab, this.powerupContainer);
         yield return new WaitForSeconds(UnityEngine.Random.Range(MIN_POWERUP_SPAWN_SPEED, MAX_POWERUP_SPAWN_SPEED));
       }
     }
@@ -122,5 +98,4 @@ namespace vio.spaceshooter.spawnmanager
       this.isSpawningActive = true;
     }
   }
-
 }
