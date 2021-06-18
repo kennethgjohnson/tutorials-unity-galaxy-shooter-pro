@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
-namespace vio.spaceshooter.spawnmanager
+namespace vio.spaceshooter.game.spawnmanager
 {
   public class SpawnManager : MonoBehaviour
   {
@@ -26,23 +25,31 @@ namespace vio.spaceshooter.spawnmanager
     GameObject enemyContainer;
     GameObject powerupContainer;
 
+    IEnumerator enemySpawner;
+    IEnumerator powerupSpawner;
+
     private bool isSpawningActive = false;
 
     void Start()
     {
       //Setting this after starting the co-routine doesnt work.
-      this.startSpawning(); 
-
+      this.startSpawning();
       this.initEnemySpawning();
       this.initPowerupsSpawning();
     }
 
-    private void initEnemySpawning()
+    private void createEnemyContainer()
     {
       this.enemyContainer = new GameObject();
       this.enemyContainer.name = "Enemies";
       this.enemyContainer.transform.parent = this.transform;
-      StartCoroutine(SpawnEnemiesRoutine());
+    }
+
+    private void initEnemySpawning()
+    {
+      this.createEnemyContainer();
+      this.enemySpawner = SpawnEnemiesRoutine();
+      StartCoroutine(this.enemySpawner);
     }
 
     private void initPowerupsSpawning()
@@ -50,7 +57,8 @@ namespace vio.spaceshooter.spawnmanager
       this.powerupContainer = new GameObject();
       this.powerupContainer.name = "Powerups";
       this.powerupContainer.transform.parent = this.transform;
-      StartCoroutine(SpawnPowerupsRoutine());
+      this.powerupSpawner = SpawnPowerupsRoutine();
+      StartCoroutine(this.powerupSpawner);
     }
 
     IEnumerator SpawnEnemiesRoutine()
@@ -96,6 +104,13 @@ namespace vio.spaceshooter.spawnmanager
     public void startSpawning()
     {
       this.isSpawningActive = true;
+    }
+    public void Reset()
+    {
+      StopCoroutine(this.enemySpawner);
+      StopCoroutine(this.powerupSpawner);
+      Destroy(this.enemyContainer.gameObject);
+      this.Start();
     }
   }
 }

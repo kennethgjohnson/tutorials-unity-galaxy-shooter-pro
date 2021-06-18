@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using vio.spaceshooter.player;
+using vio.spaceshooter.game.player;
 
-namespace vio.spaceshooter.enemy
+namespace vio.spaceshooter.game.enemy
 {
   public class Enemy : MonoBehaviour
   {

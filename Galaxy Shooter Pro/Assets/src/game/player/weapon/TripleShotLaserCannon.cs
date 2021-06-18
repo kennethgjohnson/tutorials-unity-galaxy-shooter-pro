@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace vio.spaceshooter.player.weapon
+namespace vio.spaceshooter.game.player.weapon
 {
   public class TripleShotLaserCannon : LaserCannon
   {

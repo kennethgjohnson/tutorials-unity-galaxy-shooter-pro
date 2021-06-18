@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using vio.spaceshooter.player;
+using vio.spaceshooter.game.player;
 
-namespace vio.spaceshooter.powerups
+namespace vio.spaceshooter.game.powerups
 {
   public abstract class Powerup : MonoBehaviour
   {

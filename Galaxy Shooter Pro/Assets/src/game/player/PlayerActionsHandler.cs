@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace vio.spaceshooter.player
+namespace vio.spaceshooter.game.player
 {
   class PlayerActionsHandler
   {

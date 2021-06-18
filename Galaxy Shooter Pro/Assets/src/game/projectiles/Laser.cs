@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace vio.spaceshooter.projectiles
+namespace vio.spaceshooter.game.projectiles
 {
   public class Laser : MonoBehaviour
   {

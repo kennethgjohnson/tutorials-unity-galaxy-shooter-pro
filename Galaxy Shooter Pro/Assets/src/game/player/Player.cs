@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections;
-using UnityEngine;
-using vio.spaceshooter.player.weapon;
-using vio.spaceshooter.spawnmanager;
+﻿using UnityEngine;
+using vio.spaceshooter.game.player.weapon;
 
-namespace vio.spaceshooter.player
+namespace vio.spaceshooter.game.player
 {
   public class Player : MonoBehaviour
   {
@@ -24,8 +21,7 @@ namespace vio.spaceshooter.player
     private PlayerMovementHandler playerMovementHandler;
     private PlayerActionsHandler playerActionHandler;
 
-    SpawnManager spawnManager;
-
+    
     [SerializeField]
     private GameObject laser;
 
@@ -37,10 +33,6 @@ namespace vio.spaceshooter.player
 
     void Start()
     {
-      this.transform.position = new Vector3(0, 0, 0);
-
-      this.spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
-
       this.playerMovementHandler
         = new PlayerMovementHandler(
           this,
@@ -50,6 +42,16 @@ namespace vio.spaceshooter.player
         );
       this.playerActionHandler = new PlayerActionsHandler(this);
       this.weapon = new LaserCannon(this, this.laser);
+      this.transform.position = new Vector3(0, 0, 0);
+    }
+
+    public void ResetPlayer()
+    {
+      this.weapon = new LaserCannon(this, this.laser);
+      this.transform.position = new Vector3(0, 0, 0);
+      this.ResetSpeed();
+      this.deactivateShields();
+      this.gameObject.SetActive(true);
     }
 
     void Update()
@@ -83,7 +85,7 @@ namespace vio.spaceshooter.player
 
     private void OnPlayerDeath()
     {
-      spawnManager.stopSpawning();
+      
     }
 
     public PlayerWeapon GetWeapon()

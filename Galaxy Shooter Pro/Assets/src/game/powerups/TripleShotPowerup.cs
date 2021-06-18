@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using UnityEngine;
-using vio.spaceshooter.player;
-using vio.spaceshooter.player.weapon;
+using vio.spaceshooter.game.player;
+using vio.spaceshooter.game.player.weapon;
 
-namespace vio.spaceshooter.powerups {
+namespace vio.spaceshooter.game.powerups {
   public class TripleShotPowerup : Powerup
   {
     [SerializeField]

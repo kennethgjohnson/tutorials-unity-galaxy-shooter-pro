@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace vio.spaceshooter.projectiles
+namespace vio.spaceshooter.game.projectiles
 {
   public class ProjectileGroup : MonoBehaviour
   {
