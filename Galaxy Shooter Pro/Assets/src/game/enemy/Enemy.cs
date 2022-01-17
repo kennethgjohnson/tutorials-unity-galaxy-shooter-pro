@@ -11,7 +11,7 @@ namespace vio.spaceshooter.game.enemy
     private const float MAX_X_POS = 10.00f;
     private const float MIN_X_POS = -9.75f;
     private int damageAmount = 1;
-    
+    private float speed = DEFAULT_ENEMY_SPEED;
     void Update()
     {
       this.moveEnemyDown();
@@ -22,7 +22,7 @@ namespace vio.spaceshooter.game.enemy
     }
     private void moveEnemyDown()
     {
-      this.transform.Translate(Vector3.down * DEFAULT_ENEMY_SPEED * Time.deltaTime);
+      this.transform.Translate(Vector3.down * speed * Time.deltaTime);
     }
 
     private bool isEnemyPastBottomOfPlayArea()
@@ -52,7 +52,10 @@ namespace vio.spaceshooter.game.enemy
     {
       this.GetComponentInParent<Game>().IncreaseScore(10);
       Destroy(other.gameObject);
-      Destroy(this.gameObject);
+      this.speed = UnityEngine.Random.Range(0f, 2f);
+      this.GetComponent<PolygonCollider2D>().enabled = false;
+      this.GetComponent<Animator>().SetTrigger("OnEnemyDeath");
+      Destroy(this.gameObject, 1.25f);
     }
 
     private void playerHit(Collider2D other)
