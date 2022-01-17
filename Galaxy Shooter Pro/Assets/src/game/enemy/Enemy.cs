@@ -52,7 +52,7 @@ namespace vio.spaceshooter.game.enemy
     {
       this.GetComponentInParent<Game>().IncreaseScore(10);
       Destroy(other.gameObject);
-      this.speed = UnityEngine.Random.Range(0f, 2f);
+      this.speed = this.speed * UnityEngine.Random.Range(0f, 0.5f);
       this.GetComponent<PolygonCollider2D>().enabled = false;
       this.GetComponent<Animator>().SetTrigger("OnEnemyDeath");
       Destroy(this.gameObject, 1.25f);
@@ -65,7 +65,12 @@ namespace vio.spaceshooter.game.enemy
       {
         player.Damage(this.gameObject, this.damageAmount);
       }
-      Destroy(this.gameObject);
+
+      this.speed = this.speed * UnityEngine.Random.Range(0f, 0.25f);
+      this.GetComponent<PolygonCollider2D>().enabled = false;
+      this.GetComponent<Animator>().SetTrigger("OnEnemyDeath");
+
+      Destroy(this.gameObject, 1.25f);
     }
   }
 }

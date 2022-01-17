@@ -30,6 +30,7 @@ namespace vio.spaceshooter.game.player
 
     private PlayerWeapon weapon;
     private bool isShieldsActive = false;
+    private bool isExploding = false;
 
     void Start()
     {
@@ -56,8 +57,11 @@ namespace vio.spaceshooter.game.player
 
     void Update()
     {
-      this.playerMovementHandler.Update();
-      this.playerActionHandler.Update();
+      if (!this.isExploding)
+      {
+        this.playerMovementHandler.Update();
+        this.playerActionHandler.Update();
+      }
     }
 
     public void Damage(GameObject source, int damageAmount)
@@ -80,12 +84,23 @@ namespace vio.spaceshooter.game.player
     {
       this.playerMovementHandler.Reset();
       this.OnPlayerDeath();
-      this.gameObject.SetActive(false);
     }
 
     private void OnPlayerDeath()
     {
-      
+      //this.speed = this.speed * UnityEngine.Random.Range(0f, 0.25f);
+      //We begin exloding.
+      this.GetComponent<PolygonCollider2D>().enabled = false;
+      this.GetComponent<Animator>().SetTrigger("OnPlayerDeath");
+      this.isExploding = true;
+    }
+
+    private void OnPlayerDeathComplete()
+    {
+      //We are done exloding.
+      this.GetComponent<PolygonCollider2D>().enabled = true;
+      this.isExploding = false;
+      this.gameObject.SetActive(false);
     }
 
     public PlayerWeapon GetWeapon()

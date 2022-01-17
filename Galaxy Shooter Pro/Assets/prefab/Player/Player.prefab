@@ -113,6 +113,7 @@ GameObject:
   - component: {fileID: 135798095202366126}
   - component: {fileID: 1274369316195378578}
   - component: {fileID: 5469485278467693465}
+  - component: {fileID: 7356058176478838257}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -324,3 +325,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   laser: {fileID: 2383041863094104510, guid: cd2909d1f0a61f94b8ca556f7b2bcf51, type: 3}
   playerShieldsEffect: {fileID: 521933388}
+--- !u!95 &7356058176478838257
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2954280205869825370}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 16619b6259deae44c9a7739c6dd08bc2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
