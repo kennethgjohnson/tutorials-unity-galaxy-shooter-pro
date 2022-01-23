@@ -12,17 +12,32 @@ namespace vio.spaceshooter.game.enemy
     private const float MIN_X_POS = -9.75f;
     private int damageAmount = 1;
     private float speed = DEFAULT_ENEMY_SPEED;
+    private int updateCount = 0;
+    private const int updatesPer360Degrees = 500;
+    private float spawnX;
+    private bool isLateralMovementOn = false;
     void Update()
     {
-      this.moveEnemyDown();
+      this.moveEnemy();
       if (this.isEnemyPastBottomOfPlayArea())
       {
         this.moveEnemyToRandomXLocationAtTop();
       }
     }
-    private void moveEnemyDown()
+    private void moveEnemy()
     {
-      this.transform.Translate(Vector3.down * speed * Time.deltaTime);
+      Vector2 downward = Vector2.down * speed * Time.deltaTime;
+      if (this.isLateralMovementOn) {
+        this.updateCount++;
+        float positionInCycle = (float)updateCount / (float)updatesPer360Degrees;
+        // 6.28319 - 360 degrees
+        float displacement = positionInCycle * 6.28319f;
+        Vector2 lateral = new Vector2(Mathf.Sin(displacement) / UnityEngine.Random.Range(20, 100), 0);
+        this.transform.Translate(downward + lateral);
+      } else
+      {
+        this.transform.Translate(downward);
+      }
     }
 
     private bool isEnemyPastBottomOfPlayArea()
@@ -33,6 +48,10 @@ namespace vio.spaceshooter.game.enemy
     private void moveEnemyToRandomXLocationAtTop()
     {
       this.transform.position = new Vector3(UnityEngine.Random.Range(MIN_X_POS, MAX_X_POS), MAX_Y_POS);
+      if (isLateralMovementOn)
+      {
+        this.updateCount = UnityEngine.Random.Range(0, 630);
+      }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -55,7 +74,7 @@ namespace vio.spaceshooter.game.enemy
       this.speed = this.speed * UnityEngine.Random.Range(0f, 0.5f);
       this.GetComponent<PolygonCollider2D>().enabled = false;
       this.GetComponent<Animator>().SetTrigger("OnEnemyDeath");
-      Destroy(this.gameObject, 1.25f);
+      Destroy(this.gameObject, 1.1f);
     }
 
     private void playerHit(Collider2D other)
@@ -70,7 +89,12 @@ namespace vio.spaceshooter.game.enemy
       this.GetComponent<PolygonCollider2D>().enabled = false;
       this.GetComponent<Animator>().SetTrigger("OnEnemyDeath");
 
-      Destroy(this.gameObject, 1.25f);
+      Destroy(this.gameObject, 1.1f);
+    }
+
+    public void SetLateralMovement(bool state)
+    {
+      this.isLateralMovementOn = state;
     }
   }
 }

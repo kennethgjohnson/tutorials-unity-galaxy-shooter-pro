@@ -64,11 +64,15 @@ namespace vio.spaceshooter.game
     {
       this.score = 0;
       this.GetComponentInChildren<UI>().UpdateScore(this.score);
+      this.spawnManager.SetHardMode(false);
     }
     public void IncreaseScore(int points)
     {
       this.score += points;
       this.GetComponentInChildren<UI>().UpdateScore(this.score);
+      if (this.score == 40) {
+        this.spawnManager.SetHardMode(true);
+      }
     }
 
     public int GetScore()

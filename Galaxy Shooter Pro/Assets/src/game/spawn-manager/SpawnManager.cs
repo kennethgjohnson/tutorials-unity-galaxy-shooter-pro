@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using vio.spaceshooter.game.enemy;
 
 namespace vio.spaceshooter.game.spawnmanager
 {
@@ -21,6 +22,7 @@ namespace vio.spaceshooter.game.spawnmanager
     private const float MAX_POWERUP_SPAWN_SPEED = 10f;
     private const float MIN_POWERUP_SPAWN_SPEED = 7f;
 
+    private bool isHardMode = false;
 
     GameObject enemyContainer;
     GameObject powerupContainer;
@@ -65,12 +67,16 @@ namespace vio.spaceshooter.game.spawnmanager
     {
       while (this.isSpawningActive)
       {
-        this.spawnPrefabTop(this.enemyPrefab, this.enemyContainer);
+        GameObject enemyInstance=this.spawnPrefabTop(this.enemyPrefab, this.enemyContainer);
+        if (UnityEngine.Random.Range(1, 10) > 3) {
+          enemyInstance.GetComponent<Enemy>().SetLateralMovement(this.isHardMode);
+        }
+        //yield return new WaitForSeconds(MAX_ENEMY_SPAWN_SPEED*5000);
         yield return new WaitForSeconds(UnityEngine.Random.Range(MIN_ENEMY_SPAWN_SPEED, MAX_ENEMY_SPAWN_SPEED));
       }
     }
 
-    private void spawnPrefabTop(GameObject prefab, GameObject container)
+    private GameObject spawnPrefabTop(GameObject prefab, GameObject container)
     {
       GameObject spawnedInstance = MonoBehaviour.Instantiate(
                   prefab,
@@ -78,6 +84,7 @@ namespace vio.spaceshooter.game.spawnmanager
                   Quaternion.identity
                 );
       spawnedInstance.transform.parent = container.transform;
+      return spawnedInstance;
     }
 
     private static Vector3 getRandomTopOfScreenPositionVector()
@@ -111,6 +118,24 @@ namespace vio.spaceshooter.game.spawnmanager
       StopCoroutine(this.powerupSpawner);
       Destroy(this.enemyContainer.gameObject);
       this.Start();
+    }
+    public void SetHardMode(bool hardModeState)
+    {
+      if (!this.isHardMode && hardModeState)
+      {
+        foreach (Enemy enemy in this.enemyContainer.GetComponentsInChildren<Enemy>())
+        {
+          enemy.SetLateralMovement(true);
+        }
+      }
+      else if (this.isHardMode && !hardModeState)
+      {
+        foreach (Enemy enemy in this.enemyContainer.GetComponentsInChildren<Enemy>())
+        {
+          enemy.SetLateralMovement(false);
+        }
+      }
+        this.isHardMode = hardModeState;
     }
   }
 }
