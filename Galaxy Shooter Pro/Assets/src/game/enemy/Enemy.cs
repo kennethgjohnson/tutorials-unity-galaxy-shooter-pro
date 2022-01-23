@@ -16,6 +16,8 @@ namespace vio.spaceshooter.game.enemy
     private const int updatesPer360Degrees = 500;
     private float spawnX;
     private bool isLateralMovementOn = false;
+    private int difficultyLevel = 0;
+    private float displacementFactor;
     void Update()
     {
       this.moveEnemy();
@@ -24,20 +26,85 @@ namespace vio.spaceshooter.game.enemy
         this.moveEnemyToRandomXLocationAtTop();
       }
     }
+
     private void moveEnemy()
     {
-      Vector2 downward = Vector2.down * speed * Time.deltaTime;
-      if (this.isLateralMovementOn) {
-        this.updateCount++;
-        float positionInCycle = (float)updateCount / (float)updatesPer360Degrees;
-        // 6.28319 - 360 degrees
-        float displacement = positionInCycle * 6.28319f;
-        Vector2 lateral = new Vector2(Mathf.Sin(displacement) / UnityEngine.Random.Range(20, 100), 0);
-        this.transform.Translate(downward + lateral);
-      } else
+      switch (this.difficultyLevel)
       {
-        this.transform.Translate(downward);
+        case 1:
+          this.moveEnemyMode1();
+          break;
+
+        case 2:
+          this.moveEnemyMode2();
+          break;
+
+        case 3:
+          this.moveEnemyMode3();
+          break;
+
+        default:
+          this.moveEnemyMode0();
+          break;
       }
+    }
+
+    private void moveEnemyMode0()
+    {
+      Vector2 downward = Vector2.down * speed * Time.deltaTime;
+      this.transform.Translate(downward);
+    }
+
+    private void moveEnemyMode1()
+    {
+      this.updateDisplacementFactor();
+      Vector2 lateral = this.calculateLateralVector(80);
+      Vector2 downward = calculateNormalDownwardSpeedVector();
+      this.transform.Translate(downward + lateral);
+    }
+
+  private void updateDisplacementFactor()
+    {
+      this.updateCount++;
+      float positionInCycle = (float)updateCount / (float)updatesPer360Degrees;
+      // 6.28319 - 360 degrees
+      this.displacementFactor = positionInCycle * 6.28319f;
+    }
+
+    /// <summary>
+    ///  Calculates the lateralVector
+    /// </summary>
+    /// <param name="maxLateralFactor">division factor, less is more lateral movement</param>
+    /// <returns></returns>
+    private Vector2 calculateLateralVector(int maxLateralFactor)
+    {
+      return new Vector2(Mathf.Sin(this.displacementFactor) / UnityEngine.Random.Range(maxLateralFactor, 100), 0);
+    }
+
+    private Vector2 calculateNormalDownwardSpeedVector()
+    {
+      return Vector2.down * this.speed * Time.deltaTime;
+    }
+
+    private void moveEnemyMode2()
+    {
+      this.updateDisplacementFactor();
+      Vector2 lateral = calculateLateralVector(50);
+      Vector2 downward = calculateNormalDownwardSpeedVector();
+      this.transform.Translate(downward + lateral);
+    }
+
+    private void moveEnemyMode3()
+    {
+      this.updateDisplacementFactor();
+      Vector2 lateral = calculateLateralVector(20);
+      Vector2 downward = calculateHardDifficultySpeedVector();
+      this.transform.Translate(downward + lateral);
+    }
+
+    private Vector2 calculateHardDifficultySpeedVector()
+    {
+      return calculateNormalDownwardSpeedVector() + Vector2.down * speed * Time.deltaTime * Mathf.Abs(Mathf.Sin(this.displacementFactor));
     }
 
     private bool isEnemyPastBottomOfPlayArea()
@@ -92,9 +159,9 @@ namespace vio.spaceshooter.game.enemy
       Destroy(this.gameObject, 1.1f);
     }
 
-    public void SetLateralMovement(bool state)
+    public void SetDifficultyLevel(int level)
     {
-      this.isLateralMovementOn = state;
+      this.difficultyLevel = level;
     }
   }
 }

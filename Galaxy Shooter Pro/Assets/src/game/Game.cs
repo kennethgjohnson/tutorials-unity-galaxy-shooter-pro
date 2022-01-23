@@ -64,14 +64,22 @@ namespace vio.spaceshooter.game
     {
       this.score = 0;
       this.GetComponentInChildren<UI>().UpdateScore(this.score);
-      this.spawnManager.SetHardMode(false);
+      this.spawnManager.SetDifficulty(0);
     }
     public void IncreaseScore(int points)
     {
       this.score += points;
       this.GetComponentInChildren<UI>().UpdateScore(this.score);
-      if (this.score == 40) {
-        this.spawnManager.SetHardMode(true);
+      if (this.score == 200) {
+        this.spawnManager.SetDifficulty(1);
+      }
+      if (this.score == 400)
+      {
+        this.spawnManager.SetDifficulty(2);
+      }
+      if (this.score == 600)
+      {
+        this.spawnManager.SetDifficulty(3);
       }
     }
 

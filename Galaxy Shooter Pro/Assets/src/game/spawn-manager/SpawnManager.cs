@@ -22,7 +22,7 @@ namespace vio.spaceshooter.game.spawnmanager
     private const float MAX_POWERUP_SPAWN_SPEED = 10f;
     private const float MIN_POWERUP_SPAWN_SPEED = 7f;
 
-    private bool isHardMode = false;
+    private int difficultyLevel = 0;
 
     GameObject enemyContainer;
     GameObject powerupContainer;
@@ -67,12 +67,40 @@ namespace vio.spaceshooter.game.spawnmanager
     {
       while (this.isSpawningActive)
       {
-        GameObject enemyInstance=this.spawnPrefabTop(this.enemyPrefab, this.enemyContainer);
-        if (UnityEngine.Random.Range(1, 10) > 3) {
-          enemyInstance.GetComponent<Enemy>().SetLateralMovement(this.isHardMode);
+        if (this.difficultyLevel == 3) {
+          GameObject enemyInstance = this.spawnPrefabTop(this.enemyPrefab, this.enemyContainer);
+          if (UnityEngine.Random.Range(1, 10) > 3)
+          {
+            enemyInstance.GetComponent<Enemy>().SetDifficultyLevel(this.difficultyLevel);
+          }
+          enemyInstance = this.spawnPrefabTop(this.enemyPrefab, this.enemyContainer);
+          if (UnityEngine.Random.Range(1, 10) > 3)
+          {
+            enemyInstance.GetComponent<Enemy>().SetDifficultyLevel(this.difficultyLevel);
+          }
+        } else {
+          GameObject enemyInstance=this.spawnPrefabTop(this.enemyPrefab, this.enemyContainer);
+          if (UnityEngine.Random.Range(1, 10) > 3) {
+            enemyInstance.GetComponent<Enemy>().SetDifficultyLevel(this.difficultyLevel);
+          }
         }
         //yield return new WaitForSeconds(MAX_ENEMY_SPAWN_SPEED*5000);
-        yield return new WaitForSeconds(UnityEngine.Random.Range(MIN_ENEMY_SPAWN_SPEED, MAX_ENEMY_SPAWN_SPEED));
+        if (this.difficultyLevel == 0)
+        {
+          yield return new WaitForSeconds(UnityEngine.Random.Range(MIN_ENEMY_SPAWN_SPEED, MAX_ENEMY_SPAWN_SPEED));
+        }
+        if (this.difficultyLevel == 1)
+        {
+          yield return new WaitForSeconds(UnityEngine.Random.Range(0.25f, MAX_ENEMY_SPAWN_SPEED));
+        }
+        if (this.difficultyLevel == 2)
+        {
+          yield return new WaitForSeconds(UnityEngine.Random.Range(0.25f, 1f));
+        }
+        if (this.difficultyLevel == 3)
+        {
+          yield return new WaitForSeconds(UnityEngine.Random.Range(0.25f, 0.8f));
+        }
       }
     }
 
@@ -119,23 +147,10 @@ namespace vio.spaceshooter.game.spawnmanager
       Destroy(this.enemyContainer.gameObject);
       this.Start();
     }
-    public void SetHardMode(bool hardModeState)
+
+    public void SetDifficulty(int difficultyLevel)
     {
-      if (!this.isHardMode && hardModeState)
-      {
-        foreach (Enemy enemy in this.enemyContainer.GetComponentsInChildren<Enemy>())
-        {
-          enemy.SetLateralMovement(true);
-        }
-      }
-      else if (this.isHardMode && !hardModeState)
-      {
-        foreach (Enemy enemy in this.enemyContainer.GetComponentsInChildren<Enemy>())
-        {
-          enemy.SetLateralMovement(false);
-        }
-      }
-        this.isHardMode = hardModeState;
+      this.difficultyLevel = difficultyLevel;
     }
   }
 }
