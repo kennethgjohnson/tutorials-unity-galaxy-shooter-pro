@@ -10,6 +10,7 @@ namespace vio.spaceshooter.game
     private int score = 0;
     private int lives = 0;
     private bool isGameOver = false;
+    private int difficulty = 0;
 
     SpawnManager spawnManager;
 
@@ -39,15 +40,6 @@ namespace vio.spaceshooter.game
     private void restartGame()
     {
       SceneManager.LoadScene(Constants.GAME_SCENE_INDEX);
-      //Code below replaced with complete scene reload
-      /*
-      this.ResetLives();
-      this.ResetScore();
-      this.isGameOver = false;
-      this.GetComponentInChildren<UI>().HideGameOver();
-      this.GetComponentInChildren<Player>(true).ResetPlayer();
-      this.spawnManager.Reset();*/
-
     }
 
     public void returnToMainMenu()
@@ -64,23 +56,29 @@ namespace vio.spaceshooter.game
     {
       this.score = 0;
       this.GetComponentInChildren<UI>().UpdateScore(this.score);
-      this.spawnManager.SetDifficulty(0);
+      this.setDifficulty(0);
     }
     public void IncreaseScore(int points)
     {
       this.score += points;
       this.GetComponentInChildren<UI>().UpdateScore(this.score);
-      if (this.score == 200) {
-        this.spawnManager.SetDifficulty(1);
+      if ((this.score >= 200) && (this.difficulty == 0)) {
+        this.setDifficulty(1);
       }
-      if (this.score == 400)
+      if ((this.score >= 400) && (this.difficulty == 1))
       {
-        this.spawnManager.SetDifficulty(2);
+        this.setDifficulty(2);
       }
-      if (this.score == 600)
+      if ((this.score >= 600) && (this.difficulty == 2))
       {
-        this.spawnManager.SetDifficulty(3);
+        this.setDifficulty(3);
       }
+    }
+
+    private void setDifficulty(int difficulty)
+    {
+      this.difficulty = difficulty;
+      this.spawnManager.SetDifficulty(difficulty);
     }
 
     public int GetScore()

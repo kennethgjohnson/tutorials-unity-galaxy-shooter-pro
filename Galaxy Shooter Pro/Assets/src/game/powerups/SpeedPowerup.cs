@@ -21,7 +21,7 @@ namespace vio.spaceshooter.game.powerups
       this.playerOriginalWeapon = player.GetWeapon();
       player.BoostSpeed(BOOST_SPEED);
       player.SetWeapon(new LaserCannonFast(player, this.weaponPrefab));
-      player.StartCoroutine(PowerdownSpeedBoost());
+      //player.StartCoroutine(PowerdownSpeedBoost());
     }
     
     IEnumerator PowerdownSpeedBoost()

@@ -77,7 +77,9 @@ namespace vio.spaceshooter.game.player
 
     private void takeDamage(int damageAmount)
     {
-      this.GetComponentInParent<Game>().LoseLife();
+      for(int i=1; i<=damageAmount; i++) { 
+        this.GetComponentInParent<Game>().LoseLife();
+      }
     }
 
     public void KillPlayer()

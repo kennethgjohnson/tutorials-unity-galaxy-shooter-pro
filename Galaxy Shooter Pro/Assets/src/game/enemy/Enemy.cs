@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using vio.spaceshooter.game.asteroid;
 using vio.spaceshooter.game.player;
 
 namespace vio.spaceshooter.game.enemy
@@ -132,6 +133,10 @@ namespace vio.spaceshooter.game.enemy
         case "Player":
           playerHit(other);
           break;
+
+        case "Asteroid":
+          asteroidHit(other);
+          break;
       }
     }
     private void laserHit(Collider2D other)
@@ -150,6 +155,21 @@ namespace vio.spaceshooter.game.enemy
       if (player != null)
       {
         player.Damage(this.gameObject, this.damageAmount);
+      }
+
+      this.speed = this.speed * UnityEngine.Random.Range(0f, 0.25f);
+      this.GetComponent<PolygonCollider2D>().enabled = false;
+      this.GetComponent<Animator>().SetTrigger("OnEnemyDeath");
+
+      Destroy(this.gameObject, 1.1f);
+    }
+
+      private void asteroidHit(Collider2D other)
+    {
+      Asteroid asteroid = other.GetComponent<Asteroid>();
+      if (asteroid != null)
+      {
+        asteroid.Damage(this.damageAmount);
       }
 
       this.speed = this.speed * UnityEngine.Random.Range(0f, 0.25f);

@@ -49,3 +49,5 @@ MonoBehaviour:
   - {fileID: 4823963786125154364, guid: f730a9b49c9e85f449416a70f079ff1f, type: 3}
   - {fileID: 2404287283728676281, guid: 98d0726fedeafde41b30bd22c1f0a816, type: 3}
   - {fileID: 2981948275079777433, guid: 0733a27c975897247bbcd91675dbe723, type: 3}
+  astroidPrefab: {fileID: 4676180825572333678, guid: 72e2d8ba6ac670b41b9c8ec77bb24b7f,
+    type: 3}
