@@ -19,8 +19,13 @@ namespace vio.spaceshooter.game.enemy
     private bool isLateralMovementOn = false;
     private int difficultyLevel = 0;
     private float displacementFactor;
+    /*
+    public static int LAST_FRAMECOUNT_CALCULATED = 0;
+    public static float sinValueLAST_FRAMECOUNT = 0;*/
+
     void Update()
     {
+      //Enemy.LAST_FRAMECOUNT = Time.frameCount;
       this.moveEnemy();
       if (this.isEnemyPastBottomOfPlayArea())
       {
