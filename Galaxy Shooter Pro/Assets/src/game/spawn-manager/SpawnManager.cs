@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using vio.spaceshooter.game.enemy;
 
@@ -16,11 +17,14 @@ namespace vio.spaceshooter.game.spawnmanager
     private GameObject astroidPrefab;
 
     private const float MAX_Y_POS = 12f;
+    private const float MIN_Y_POS = -2.5f;
     private const float MAX_X_POS = 10.00f;
     private const float MIN_X_POS = -9.75f;
 
     private const float MAX_ENEMY_SPAWN_SPEED = 2f;
     private const float MIN_ENEMY_SPAWN_SPEED = 0.5f;
+
+    private const ushort MAX_ENEMIES = 20;
 
     private const float MAX_POWERUP_SPAWN_SPEED = 10f;
     private const float MIN_POWERUP_SPAWN_SPEED = 7f;
@@ -45,7 +49,7 @@ namespace vio.spaceshooter.game.spawnmanager
 
     void Start()
     {
-      
+
       this.startSpawning(); // Setting this after starting the co-routine doesnt work.
       this.initEnemySpawning();
       this.initPowerupsSpawning();
@@ -76,43 +80,50 @@ namespace vio.spaceshooter.game.spawnmanager
     {
       while (this.isSpawningActive)
       {
-        if (this.difficultyLevel == 3)
+        if (this.enemyContainer.transform.childCount < MAX_ENEMIES)
         {
-          GameObject enemyInstance = this.spawnPrefabTop(this.enemyPrefab, this.enemyContainer);
-          if (UnityEngine.Random.Range(1, 10) > 3)
+          if (this.difficultyLevel == 3)
           {
-            enemyInstance.GetComponent<Enemy>().SetDifficultyLevel(this.difficultyLevel);
+            GameObject enemyInstance = this.spawnPrefabTop(this.enemyPrefab, this.enemyContainer);
+            if (UnityEngine.Random.Range(1, 10) > 3)
+            {
+              enemyInstance.GetComponent<Enemy>().SetDifficultyLevel(this.difficultyLevel);
+            }
+            enemyInstance = this.spawnPrefabTop(this.enemyPrefab, this.enemyContainer);
+            if (UnityEngine.Random.Range(1, 10) > 3)
+            {
+              enemyInstance.GetComponent<Enemy>().SetDifficultyLevel(this.difficultyLevel);
+            }
           }
-          enemyInstance = this.spawnPrefabTop(this.enemyPrefab, this.enemyContainer);
-          if (UnityEngine.Random.Range(1, 10) > 3)
+          else
           {
-            enemyInstance.GetComponent<Enemy>().SetDifficultyLevel(this.difficultyLevel);
+            GameObject enemyInstance = this.spawnPrefabTop(this.enemyPrefab, this.enemyContainer);
+            if (UnityEngine.Random.Range(1, 10) > 3)
+            {
+              enemyInstance.GetComponent<Enemy>().SetDifficultyLevel(this.difficultyLevel);
+            }
+          }
+          //yield return new WaitForSeconds(MAX_ENEMY_SPAWN_SPEED*5000);
+          if (this.difficultyLevel == 0)
+          {
+            yield return new WaitForSeconds(UnityEngine.Random.Range(MIN_ENEMY_SPAWN_SPEED, MAX_ENEMY_SPAWN_SPEED));
+          }
+          if (this.difficultyLevel == 1)
+          {
+            yield return new WaitForSeconds(UnityEngine.Random.Range(0.25f, MAX_ENEMY_SPAWN_SPEED));
+          }
+          if (this.difficultyLevel == 2)
+          {
+            yield return new WaitForSeconds(UnityEngine.Random.Range(0.25f, 1f));
+          }
+          if (this.difficultyLevel == 3)
+          {
+            yield return new WaitForSeconds(UnityEngine.Random.Range(0.25f, 0.8f));
           }
         }
         else
         {
-          GameObject enemyInstance = this.spawnPrefabTop(this.enemyPrefab, this.enemyContainer);
-          if (UnityEngine.Random.Range(1, 10) > 3)
-          {
-            enemyInstance.GetComponent<Enemy>().SetDifficultyLevel(this.difficultyLevel);
-          }
-        }
-        //yield return new WaitForSeconds(MAX_ENEMY_SPAWN_SPEED*5000);
-        if (this.difficultyLevel == 0)
-        {
-          yield return new WaitForSeconds(UnityEngine.Random.Range(MIN_ENEMY_SPAWN_SPEED, MAX_ENEMY_SPAWN_SPEED));
-        }
-        if (this.difficultyLevel == 1)
-        {
-          yield return new WaitForSeconds(UnityEngine.Random.Range(0.25f, MAX_ENEMY_SPAWN_SPEED));
-        }
-        if (this.difficultyLevel == 2)
-        {
-          yield return new WaitForSeconds(UnityEngine.Random.Range(0.25f, 1f));
-        }
-        if (this.difficultyLevel == 3)
-        {
-          yield return new WaitForSeconds(UnityEngine.Random.Range(0.25f, 0.8f));
+          yield return new WaitForSeconds(0.25f);
         }
       }
     }
@@ -127,9 +138,33 @@ namespace vio.spaceshooter.game.spawnmanager
       spawnedInstance.transform.parent = container.transform;
       return spawnedInstance;
     }
-    private static Vector3 getRandomTopOfScreenPositionVector()
+    private Vector3 getRandomTopOfScreenPositionVector()
     {
-      return new Vector3(UnityEngine.Random.Range(MIN_X_POS, MAX_X_POS), MAX_Y_POS);
+      Vector3 position;
+      do
+      {
+        position = new Vector3(UnityEngine.Random.Range(MIN_X_POS, MAX_X_POS), MAX_Y_POS);
+      } while (this.isCollidingWithEnemy(position));
+      return position;
+    }
+
+    private bool isCollidingWithEnemy(Vector3 position)
+    {
+      foreach (Enemy enemy in this.enemyContainer.GetComponentsInChildren<Enemy>())
+      {
+        if (enemy.transform.position.y > 10)
+        {
+          float distance = Vector3.Distance(enemy.transform.position, position);
+          //Debug.Log("distance:" + distance);
+          if ((distance < 2) && (distance > -2))
+          {
+            //Debug.Log("collision detected");
+            return true;
+          }
+        }
+
+      }
+      return false;
     }
 
     private void initPowerupsSpawning()
@@ -175,7 +210,7 @@ namespace vio.spaceshooter.game.spawnmanager
     {
       this.isSpawningActive = false;
     }
-    
+
     public void Reset()
     {
       StopCoroutine(this.enemySpawner);
@@ -187,6 +222,27 @@ namespace vio.spaceshooter.game.spawnmanager
     public void SetDifficulty(int difficultyLevel)
     {
       this.difficultyLevel = difficultyLevel;
+    }
+
+    void Update()
+    {
+      this.moveEnemiesBellowCutOfPointUp();
+    }
+
+    private void moveEnemiesBellowCutOfPointUp()
+    {
+      foreach (Enemy enemyBeingMoved in this.enemyContainer.GetComponentsInChildren<Enemy>())
+      {
+        if (enemyBeingMoved.transform.position.y < MIN_Y_POS)
+        {
+          this.moveEnemyToRandomXLocationAtTop(enemyBeingMoved);
+        }
+      }
+    }
+    private void moveEnemyToRandomXLocationAtTop(Enemy enemy)
+    {
+      enemy.transform.position = getRandomTopOfScreenPositionVector();
+      enemy.RandomizeCyclePosition();
     }
   }
 }

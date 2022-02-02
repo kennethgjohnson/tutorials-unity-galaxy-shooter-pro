@@ -27,10 +27,10 @@ namespace vio.spaceshooter.game.enemy
     {
       //Enemy.LAST_FRAMECOUNT = Time.frameCount;
       this.moveEnemy();
-      if (this.isEnemyPastBottomOfPlayArea())
+      /*if (this.isEnemyPastBottomOfPlayArea())
       {
         this.moveEnemyToRandomXLocationAtTop();
-      }
+      }*/
     }
 
     private void moveEnemy()
@@ -121,10 +121,7 @@ namespace vio.spaceshooter.game.enemy
     private void moveEnemyToRandomXLocationAtTop()
     {
       this.transform.position = new Vector3(UnityEngine.Random.Range(MIN_X_POS, MAX_X_POS), MAX_Y_POS);
-      if (isLateralMovementOn)
-      {
-        this.updateCount = UnityEngine.Random.Range(0, 630);
-      }
+      this.RandomizeCyclePosition();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -141,6 +138,12 @@ namespace vio.spaceshooter.game.enemy
 
         case "Asteroid":
           asteroidHit(other);
+          break;
+
+        case "Enemy":
+          if (UnityEngine.Random.Range(1, 5)==2) {
+            this.updateCount = this.updateCount - 315;
+          }
           break;
       }
     }
@@ -187,6 +190,14 @@ namespace vio.spaceshooter.game.enemy
     public void SetDifficultyLevel(int level)
     {
       this.difficultyLevel = level;
+    }
+
+    public void RandomizeCyclePosition()
+    {
+      if (this.isLateralMovementOn)
+      {
+        this.updateCount = UnityEngine.Random.Range(0, 630);
+      }
     }
   }
 }

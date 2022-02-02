@@ -11,7 +11,7 @@ namespace vio.spaceshooter.mainmenu
     }
     public void QuitGame()
     {
-      Debug.Log("Application quiting...");
+      //Debug.Log("Application quiting...");
       Application.Quit();
     }
   }

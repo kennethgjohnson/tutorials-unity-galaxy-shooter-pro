@@ -12,7 +12,7 @@ namespace vio.spaceshooter.game
     {
       float x = DRIFT_RADIUS * Mathf.Cos((float)Time.frameCount / 500f);
       float y = 4f - DRIFT_RADIUS  * Mathf.Sin((float)Time.frameCount / 500f);
-      Debug.Log((float)Time.frameCount/500f);
+      //Debug.Log((float)Time.frameCount/500f);
       //Debug.Log(Time.frameCount);
       //x = DRIFT_RADIUS  * cos((float)Time.frameCount/500f)
       //y = DRIFT_RADIUS  * sin((float)Time.frameCount/500f)
