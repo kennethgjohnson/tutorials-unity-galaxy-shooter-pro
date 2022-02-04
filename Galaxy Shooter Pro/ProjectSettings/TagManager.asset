@@ -16,8 +16,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - Post Process Layer
+  - No Post Processing
   - 
   - 
   - 
@@ -47,6 +47,18 @@ TagManager:
   - name: Background
     uniqueID: 3818219775
     locked: 0
+  - name: Middleground
+    uniqueID: 2315600273
+    locked: 0
+  - name: DamageBottom
+    uniqueID: 580579537
+    locked: 0
   - name: Foreground
     uniqueID: 3201737421
+    locked: 0
+  - name: DamageTop
+    uniqueID: 2069464761
+    locked: 0
+  - name: ShieldTop
+    uniqueID: 1567810007
     locked: 0

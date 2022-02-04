@@ -103,5 +103,10 @@ namespace vio.spaceshooter.game
       this.GetComponentInChildren<Player>().KillPlayer();
       this.GetComponentInChildren<UI>().ShowGameOver();
     }
+
+    public int GetLives()
+    {
+      return this.lives;
+    }
   }
 }
