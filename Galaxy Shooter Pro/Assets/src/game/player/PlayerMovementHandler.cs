@@ -15,6 +15,10 @@ namespace vio.spaceshooter.game.player
     private bool applyRestrictionVector = false;
     private float newX;
     private float newY;
+    // 0 - none
+    // 1 - right
+    // -1 - left
+    private int turningDirection = 0;
 
     private readonly Player player;
     private readonly FakePlayerBehaviourHandler fakePlayerBehaviourHandler;
@@ -28,7 +32,43 @@ namespace vio.spaceshooter.game.player
 
     public void Update()
     {
+      this.animateMovement();
       this.movePlayer();
+    }
+
+    private void animateMovement()
+    {
+      Animator animator = this.player.GetComponent<Animator>();
+      if (Input.GetAxis("Horizontal") == 0 && (this.turningDirection != 0))
+      {
+        animator.ResetTrigger("OnTurnRight");
+        animator.ResetTrigger("OnTurnLeft");
+        animator.ResetTrigger("OnNoTurning");
+
+        animator.StopPlayback();
+        animator.SetTrigger("OnNoTurning");
+        this.turningDirection = 0;
+      }
+      else if ((Input.GetAxis("Horizontal") > 0) && (this.turningDirection != 1))
+      {
+        animator.ResetTrigger("OnTurnRight");
+        animator.ResetTrigger("OnTurnLeft");
+        animator.ResetTrigger("OnNoTurning");
+
+        animator.StopPlayback();
+        animator.SetTrigger("OnTurnRight");
+        this.turningDirection = 1;
+      }
+      else if ((Input.GetAxis("Horizontal") < 0) && (this.turningDirection != -1))
+      {
+        animator.ResetTrigger("OnTurnRight");
+        animator.ResetTrigger("OnTurnLeft");
+        animator.ResetTrigger("OnNoTurning");
+
+        animator.StopPlayback();
+        animator.SetTrigger("OnTurnLeft");
+        this.turningDirection = -1;
+      }
     }
 
     private void movePlayer()
@@ -38,7 +78,7 @@ namespace vio.spaceshooter.game.player
     }
 
     private void applyPlayerInput()
-    {
+    { 
       this.player.transform.Translate(
                   this.getDirectionInputVector()
                   * this.getPosibleDistanceMovedSinceLastFrame()
@@ -151,6 +191,11 @@ namespace vio.spaceshooter.game.player
     public void ResetPlayerSpeed()
     {
       this.playerSpeed = DEFAULT_PLAYER_SPEED;
+    }
+    public void ResetPlayerAnimations()
+    {
+      this.player.GetComponent<Animator>().SetTrigger("OnNoTurning");
+      this.turningDirection = 0;
     }
   }
 
