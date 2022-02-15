@@ -45,7 +45,6 @@ namespace vio.spaceshooter.game.player
         animator.ResetTrigger("OnTurnLeft");
         animator.ResetTrigger("OnNoTurning");
 
-        animator.StopPlayback();
         animator.SetTrigger("OnNoTurning");
         this.turningDirection = 0;
       }
