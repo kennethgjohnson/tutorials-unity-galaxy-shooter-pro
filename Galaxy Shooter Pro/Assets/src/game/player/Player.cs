@@ -29,6 +29,9 @@ namespace vio.spaceshooter.game.player
     [SerializeField]
     private GameObject playerShieldsEffect;
 
+    [SerializeField]
+    private GameObject fakePlayerShieldsEffect;
+
     private PlayerWeapon weapon;
     private bool isShieldsActive = false;
     private bool isExploding = false;
@@ -39,11 +42,13 @@ namespace vio.spaceshooter.game.player
     void Start()
     {
       this.game = GameObject.Find("Game").GetComponent<Game>();
+      
       this.playerMovementHandler
         = new PlayerMovementHandler(
           this,
           new FakePlayerBehaviourHandler(
-            GameObject.Find("Player_Fake")
+            GameObject.Find("Player_Fake"),
+            fakePlayerShieldsEffect
           )
         );
       this.playerActionHandler = new PlayerActionsHandler(this);
@@ -149,12 +154,14 @@ namespace vio.spaceshooter.game.player
       if (this.isShieldsActive) return;
       this.isShieldsActive = true;
       this.playerShieldsEffect.SetActive(true);
+      this.fakePlayerShieldsEffect.SetActive(true);
     }
 
     private void deactivateShields()
     {
       this.isShieldsActive = false;
       this.playerShieldsEffect.SetActive(false);
+      this.fakePlayerShieldsEffect.SetActive(false);
     }
 
     private void SetPlayerDamageEffects()

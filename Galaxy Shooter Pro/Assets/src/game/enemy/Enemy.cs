@@ -24,12 +24,15 @@ namespace vio.spaceshooter.game.enemy
     private PolygonCollider2D objectCollider;
     private Animator animator;
 
-    void Update()
+    void Start()
     {
-      this.moveEnemy();
       this.game = this.GetComponentInParent<Game>();
       this.objectCollider = this.GetComponent<PolygonCollider2D>();
       this.animator = this.GetComponent<Animator>();
+    }
+    void Update()
+    {
+      this.moveEnemy();
     }
 
     private void moveEnemy()

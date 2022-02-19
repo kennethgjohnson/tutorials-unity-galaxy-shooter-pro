@@ -8,18 +8,21 @@ namespace vio.spaceshooter.game.player
     private const float TRANSITION_RIGHT_X = 10f;
 
     private readonly GameObject fakePlayerGameObject;
+    private readonly GameObject fakeShieldGameObject;
     private Animator fakePlayerAnimator;
     private Vector3 realPlayerPosition;
-    public FakePlayerBehaviourHandler(GameObject fakePlayerGameObject)
+    public FakePlayerBehaviourHandler(GameObject fakePlayerGameObject, GameObject fakeShieldGameObject)
     {
       this.fakePlayerGameObject = fakePlayerGameObject;
+      this.fakeShieldGameObject = fakeShieldGameObject;
       this.HideFakePlayer();
       this.fakePlayerAnimator = this.fakePlayerGameObject.GetComponent<Animator>();
     }
 
     public void HideFakePlayer()
     {
-      this.fakePlayerGameObject.transform.position = new Vector3(0, 0, -5);
+      this.fakePlayerGameObject.transform.position = new Vector3(0, 0, -50);
+      this.fakeShieldGameObject.transform.position = new Vector3(0, 0, -50);
     }
 
     public void Update(Vector3 realPlayerPosition)
