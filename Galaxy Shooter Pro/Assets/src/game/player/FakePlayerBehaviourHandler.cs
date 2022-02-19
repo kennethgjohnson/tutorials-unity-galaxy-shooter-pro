@@ -4,21 +4,22 @@ namespace vio.spaceshooter.game.player
 {
   public class FakePlayerBehaviourHandler
   {
-    private const float TRANSITION_LEFT_X = -8.25f;
-    private const float TRANSITION_RIGHT_X = 8.25f;
+    private const float TRANSITION_LEFT_X = -10f;
+    private const float TRANSITION_RIGHT_X = 10f;
 
-    private readonly Transform fakePlayerTransformComponent;
-    
+    private readonly GameObject fakePlayerGameObject;
+    private Animator fakePlayerAnimator;
     private Vector3 realPlayerPosition;
-    public FakePlayerBehaviourHandler(Transform fakePlayerTransformComponent)
+    public FakePlayerBehaviourHandler(GameObject fakePlayerGameObject)
     {
-      this.fakePlayerTransformComponent = fakePlayerTransformComponent;
+      this.fakePlayerGameObject = fakePlayerGameObject;
       this.HideFakePlayer();
+      this.fakePlayerAnimator = this.fakePlayerGameObject.GetComponent<Animator>();
     }
 
     public void HideFakePlayer()
     {
-      this.fakePlayerTransformComponent.transform.position = new Vector3(0, 0, -20);
+      this.fakePlayerGameObject.transform.position = new Vector3(0, 0, -5);
     }
 
     public void Update(Vector3 realPlayerPosition)
@@ -45,7 +46,7 @@ namespace vio.spaceshooter.game.player
 
     private void showFakePlayerToRight()
     {
-      fakePlayerTransformComponent.transform.position = new Vector3(
+      fakePlayerGameObject.transform.position = new Vector3(
         this.calculateFakePlayerXPositionToTheRight(),
         this.realPlayerPosition.y,
         0
@@ -54,7 +55,7 @@ namespace vio.spaceshooter.game.player
 
     private float calculateFakePlayerXPositionToTheRight()
     {
-      return this.realPlayerPosition.x + 19.7f;
+      return this.realPlayerPosition.x + 21.5f;
     }
 
     private bool isPlayerMovingOverRightWrappingThreshold()
@@ -64,7 +65,7 @@ namespace vio.spaceshooter.game.player
 
     private void showFakePlayerToLeft()
     {
-      fakePlayerTransformComponent.transform.position = new Vector3(
+      fakePlayerGameObject.transform.position = new Vector3(
         calculateFakePlayerXPositionToTheLeft(),
         this.realPlayerPosition.y,
         0
@@ -73,7 +74,33 @@ namespace vio.spaceshooter.game.player
 
     private float calculateFakePlayerXPositionToTheLeft()
     {
-      return this.realPlayerPosition.x - 19.6f;
+      return this.realPlayerPosition.x - 21.5f;
+    }
+
+    public void animateNone()
+    {
+      fakePlayerAnimator.ResetTrigger("OnTurnRight");
+      fakePlayerAnimator.ResetTrigger("OnTurnLeft");
+      fakePlayerAnimator.ResetTrigger("OnNoTurning");
+      fakePlayerAnimator.SetTrigger("OnNoTurning");
+    }
+
+    public void animateLeft()
+    {
+      fakePlayerAnimator.ResetTrigger("OnTurnRight");
+      fakePlayerAnimator.ResetTrigger("OnTurnLeft");
+      fakePlayerAnimator.ResetTrigger("OnNoTurning");
+      fakePlayerAnimator.StopPlayback();
+      fakePlayerAnimator.SetTrigger("OnTurnLeft");
+    }
+
+    public void animateRight()
+    {
+      fakePlayerAnimator.ResetTrigger("OnTurnRight");
+      fakePlayerAnimator.ResetTrigger("OnTurnLeft");
+      fakePlayerAnimator.ResetTrigger("OnNoTurning");
+      fakePlayerAnimator.StopPlayback();
+      fakePlayerAnimator.SetTrigger("OnTurnRight");
     }
   }
 

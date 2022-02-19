@@ -19,18 +19,17 @@ namespace vio.spaceshooter.game.enemy
     private bool isLateralMovementOn = false;
     private int difficultyLevel = 0;
     private float displacementFactor;
-    /*
-    public static int LAST_FRAMECOUNT_CALCULATED = 0;
-    public static float sinValueLAST_FRAMECOUNT = 0;*/
+
+    private Game game;
+    private PolygonCollider2D objectCollider;
+    private Animator animator;
 
     void Update()
     {
-      //Enemy.LAST_FRAMECOUNT = Time.frameCount;
       this.moveEnemy();
-      /*if (this.isEnemyPastBottomOfPlayArea())
-      {
-        this.moveEnemyToRandomXLocationAtTop();
-      }*/
+      this.game = this.GetComponentInParent<Game>();
+      this.objectCollider = this.GetComponent<PolygonCollider2D>();
+      this.animator = this.GetComponent<Animator>();
     }
 
     private void moveEnemy()
@@ -149,11 +148,11 @@ namespace vio.spaceshooter.game.enemy
     }
     private void laserHit(Collider2D other)
     {
-      this.GetComponentInParent<Game>().IncreaseScore(10);
+      this.game.IncreaseScore(10);
       Destroy(other.gameObject);
       this.speed = this.speed * UnityEngine.Random.Range(0f, 0.5f);
-      this.GetComponent<PolygonCollider2D>().enabled = false;
-      this.GetComponent<Animator>().SetTrigger("OnEnemyDeath");
+      this.objectCollider.enabled = false;
+      this.animator.SetTrigger("OnEnemyDeath");
       Destroy(this.transform.Find("Left_Thruster").gameObject);
       Destroy(this.transform.Find("Right_Thruster").gameObject);
       Destroy(this.gameObject, 1.1f);
@@ -168,8 +167,8 @@ namespace vio.spaceshooter.game.enemy
       }
 
       this.speed = this.speed * UnityEngine.Random.Range(0f, 0.25f);
-      this.GetComponent<PolygonCollider2D>().enabled = false;
-      this.GetComponent<Animator>().SetTrigger("OnEnemyDeath");
+      this.objectCollider.enabled = false;
+      this.animator.SetTrigger("OnEnemyDeath");
 
       Destroy(this.transform.Find("Left_Thruster").gameObject);
       Destroy(this.transform.Find("Right_Thruster").gameObject);
@@ -185,8 +184,8 @@ namespace vio.spaceshooter.game.enemy
       }
 
       this.speed = this.speed * UnityEngine.Random.Range(0f, 0.25f);
-      this.GetComponent<PolygonCollider2D>().enabled = false;
-      this.GetComponent<Animator>().SetTrigger("OnEnemyDeath");
+      if (this.objectCollider!=null) this.objectCollider.enabled = false;
+      this.animator.SetTrigger("OnEnemyDeath");
 
       Destroy(this.transform.Find("Left_Thruster").gameObject);
       Destroy(this.transform.Find("Right_Thruster").gameObject);

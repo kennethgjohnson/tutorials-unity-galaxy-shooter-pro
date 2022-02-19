@@ -15,10 +15,16 @@ namespace vio.spaceshooter.game.asteroid
 
     private int asteroidLife = 7;
 
+    private Game game;
+    private PolygonCollider2D objectCollider;
+    private Animator animator;
     // Start is called before the first frame update
     void Start()
     {
       this.beginMomentum();
+      this.game = this.GetComponentInParent<Game>();
+      this.objectCollider = this.GetComponent<PolygonCollider2D>();
+      this.animator = this.GetComponent<Animator>();
     }
 
     private void beginMomentum()
@@ -52,9 +58,7 @@ namespace vio.spaceshooter.game.asteroid
     {
       this.transform.Rotate(0, 0, rotation * Time.deltaTime);
       this.transform.Translate(this.momentumVector * Time.deltaTime, Space.World);
-      /*
-      Vector2 downward = Vector2 * speed * Time.deltaTime;
-      this.transform.Translate(downward);*/
+
       if (this.isAsteroidPastBottomOfPlayArea()) moveAsteroidToRandomXLocationAtTop();
     }
 
@@ -94,7 +98,7 @@ namespace vio.spaceshooter.game.asteroid
       this.Damage(1);
       if (this.asteroidLife < 1)
       {
-        this.GetComponentInParent<Game>().IncreaseScore(100);
+        this.game.IncreaseScore(100);
       }
     }
 
@@ -105,14 +109,14 @@ namespace vio.spaceshooter.game.asteroid
       {
         player.Damage(this.gameObject, this.damageAmount);
       }
-      this.GetComponent<PolygonCollider2D>().enabled = false;
-      this.GetComponent<Animator>().SetTrigger("OnAsteroidDestroyed");
+      this.objectCollider.enabled = false;
+      this.animator.SetTrigger("OnAsteroidDestroyed");
     }
 
     private void asteroidDestroyed()
     {
-      this.GetComponent<PolygonCollider2D>().enabled = false;
-       this.GetComponent<Animator>().SetTrigger("OnAsteroidDestroyed");
+      this.objectCollider.enabled = false;
+      this.animator.SetTrigger("OnAsteroidDestroyed");
     }
 
     public void OnAsteroidDestroyedComplete()
@@ -125,8 +129,8 @@ namespace vio.spaceshooter.game.asteroid
       this.asteroidLife -= damage;
       if (this.asteroidLife<1)
       {
-        this.GetComponent<PolygonCollider2D>().enabled = false;
-        this.GetComponent<Animator>().SetTrigger("OnAsteroidDestroyed");
+        this.objectCollider.enabled = false;
+        this.animator.SetTrigger("OnAsteroidDestroyed");
       }
     }
   }

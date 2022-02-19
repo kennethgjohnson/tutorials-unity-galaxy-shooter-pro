@@ -18,8 +18,8 @@ namespace vio.spaceshooter.game.spawnmanager
 
     private const float MAX_Y_POS = 12f;
     private const float MIN_Y_POS = -2.5f;
-    private const float MAX_X_POS = 10.00f;
-    private const float MIN_X_POS = -9.75f;
+    private const float MAX_X_POS = 10.55f;
+    private const float MIN_X_POS = -10.55f;
 
     private const float MAX_ENEMY_SPAWN_SPEED = 2f;
     private const float MIN_ENEMY_SPAWN_SPEED = 0.5f;

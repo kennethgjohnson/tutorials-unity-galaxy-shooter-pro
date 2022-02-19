@@ -43,7 +43,7 @@ namespace vio.spaceshooter.game.player
         = new PlayerMovementHandler(
           this,
           new FakePlayerBehaviourHandler(
-            GameObject.Find("Player_Fake").transform
+            GameObject.Find("Player_Fake")
           )
         );
       this.playerActionHandler = new PlayerActionsHandler(this);

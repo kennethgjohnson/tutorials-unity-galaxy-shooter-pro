@@ -9,8 +9,8 @@ namespace vio.spaceshooter.game.player
     private float playerSpeed;
     private const float MAX_Y_POS = 8f;
     private const float MIN_Y_POS = -0.8f;
-    private const float MAX_X_POS = 10.00f;
-    private const float MIN_X_POS = -9.75f;
+    private const float MAX_X_POS = 10.8f;
+    private const float MIN_X_POS = -10.8f;
 
     private bool applyRestrictionVector = false;
     private float newX;
@@ -22,12 +22,15 @@ namespace vio.spaceshooter.game.player
 
     private readonly Player player;
     private readonly FakePlayerBehaviourHandler fakePlayerBehaviourHandler;
+
+    private Animator playerAnimator;
     public PlayerMovementHandler(Player player, FakePlayerBehaviourHandler fakePlayerBehaviourHandler)
     {
       this.player = player;
       this.fakePlayerBehaviourHandler = fakePlayerBehaviourHandler;
       player.transform.position = new Vector3(0, 0, 0);
       playerSpeed = DEFAULT_PLAYER_SPEED;
+      this.playerAnimator = this.player.GetComponent<Animator>();
     }
 
     public void Update()
@@ -38,35 +41,34 @@ namespace vio.spaceshooter.game.player
 
     private void animateMovement()
     {
-      Animator animator = this.player.GetComponent<Animator>();
       if (Input.GetAxis("Horizontal") == 0 && (this.turningDirection != 0))
       {
-        animator.ResetTrigger("OnTurnRight");
-        animator.ResetTrigger("OnTurnLeft");
-        animator.ResetTrigger("OnNoTurning");
-
-        animator.SetTrigger("OnNoTurning");
+        playerAnimator.ResetTrigger("OnTurnRight");
+        playerAnimator.ResetTrigger("OnTurnLeft");
+        playerAnimator.ResetTrigger("OnNoTurning");
+        playerAnimator.SetTrigger("OnNoTurning");
         this.turningDirection = 0;
+        fakePlayerBehaviourHandler.animateNone();
       }
       else if ((Input.GetAxis("Horizontal") > 0) && (this.turningDirection != 1))
       {
-        animator.ResetTrigger("OnTurnRight");
-        animator.ResetTrigger("OnTurnLeft");
-        animator.ResetTrigger("OnNoTurning");
-
-        animator.StopPlayback();
-        animator.SetTrigger("OnTurnRight");
+        playerAnimator.ResetTrigger("OnTurnRight");
+        playerAnimator.ResetTrigger("OnTurnLeft");
+        playerAnimator.ResetTrigger("OnNoTurning");
+        playerAnimator.StopPlayback();
+        playerAnimator.SetTrigger("OnTurnRight");
         this.turningDirection = 1;
+        fakePlayerBehaviourHandler.animateRight();
       }
       else if ((Input.GetAxis("Horizontal") < 0) && (this.turningDirection != -1))
       {
-        animator.ResetTrigger("OnTurnRight");
-        animator.ResetTrigger("OnTurnLeft");
-        animator.ResetTrigger("OnNoTurning");
-
-        animator.StopPlayback();
-        animator.SetTrigger("OnTurnLeft");
+        playerAnimator.ResetTrigger("OnTurnRight");
+        playerAnimator.ResetTrigger("OnTurnLeft");
+        playerAnimator.ResetTrigger("OnNoTurning");
+        playerAnimator.StopPlayback();
+        playerAnimator.SetTrigger("OnTurnLeft");
         this.turningDirection = -1;
+        fakePlayerBehaviourHandler.animateLeft();
       }
     }
 
