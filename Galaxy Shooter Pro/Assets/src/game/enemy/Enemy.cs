@@ -149,10 +149,16 @@ namespace vio.spaceshooter.game.enemy
           break;
       }
     }
+
     private void laserHit(Collider2D other)
     {
-      this.game.IncreaseScore(10);
+      this.selfDestruct();
       Destroy(other.gameObject);
+    }
+
+    public void selfDestruct()
+    {
+      this.game.IncreaseScore(10);
       this.speed = this.speed * UnityEngine.Random.Range(0f, 0.5f);
       this.objectCollider.enabled = false;
       this.animator.SetTrigger("OnEnemyDeath");

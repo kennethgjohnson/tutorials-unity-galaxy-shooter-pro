@@ -16,6 +16,9 @@ namespace vio.spaceshooter.game.spawnmanager
     [SerializeField]
     private GameObject astroidPrefab;
 
+    [SerializeField]
+    private GameObject player;
+
     private const float MAX_Y_POS = 12f;
     private const float MIN_Y_POS = -2.5f;
     private const float MAX_X_POS = 10.55f;
@@ -26,8 +29,8 @@ namespace vio.spaceshooter.game.spawnmanager
 
     private const ushort MAX_ENEMIES = 20;
 
-    private const float MAX_POWERUP_SPAWN_SPEED = 10f;
-    private const float MIN_POWERUP_SPAWN_SPEED = 7f;
+    private const float MAX_POWERUP_SPAWN_SPEED = 3f;
+    private const float MIN_POWERUP_SPAWN_SPEED = 3f;
 
     private const ushort MAX_ASTROIDS = 2;
 
@@ -46,6 +49,7 @@ namespace vio.spaceshooter.game.spawnmanager
     IEnumerator astroidSpawner;
 
     private bool isSpawningActive = false;
+
 
     void Start()
     {
@@ -179,7 +183,7 @@ namespace vio.spaceshooter.game.spawnmanager
       yield return new WaitForSeconds(UnityEngine.Random.Range(MIN_POWERUP_SPAWN_SPEED, MAX_POWERUP_SPAWN_SPEED));
       while (this.isSpawningActive)
       {
-        int powerupNumber = UnityEngine.Random.Range(0, 3);
+        int powerupNumber = UnityEngine.Random.Range(0, 4);
         GameObject powerupPrefab = powerupPrefabs[powerupNumber];
         this.spawnPrefabTop(powerupPrefab, this.powerupContainer);
         yield return new WaitForSeconds(UnityEngine.Random.Range(MIN_POWERUP_SPAWN_SPEED, MAX_POWERUP_SPAWN_SPEED));
@@ -244,5 +248,23 @@ namespace vio.spaceshooter.game.spawnmanager
       enemy.transform.position = getRandomTopOfScreenPositionVector();
       enemy.RandomizeCyclePosition();
     }
+
+    public void ExplodeEnemies()
+    {
+      foreach (Enemy enemy in this.enemyContainer.GetComponentsInChildren<Enemy>())
+      {
+        float distance = Vector3.Distance(enemy.transform.position, this.player.transform.position);
+        float fuseTime = distance / 25;
+        StartCoroutine(SelfDestructorRoutine(fuseTime, enemy));
+      }
+    }
+
+    IEnumerator SelfDestructorRoutine(float delay, Enemy enemy)
+    {
+      yield return new WaitForSeconds(delay);
+      enemy.selfDestruct();
+    }
+
+
   }
 }

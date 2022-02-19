@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using vio.spaceshooter.game.player.weapon;
+using vio.spaceshooter.game.spawnmanager;
 
 namespace vio.spaceshooter.game.player
 {
@@ -32,12 +33,17 @@ namespace vio.spaceshooter.game.player
     [SerializeField]
     private GameObject fakePlayerShieldsEffect;
 
+    [SerializeField]
+    private GameObject shockwaveFab;
+
     private PlayerWeapon weapon;
     private bool isShieldsActive = false;
     private bool isExploding = false;
 
     private Game game;
     private int damageLevel = 0;
+
+    private SpawnManager spawnmanager;
 
     void Start()
     {
@@ -56,6 +62,8 @@ namespace vio.spaceshooter.game.player
       this.transform.position = new Vector3(0, 0, 0);
       SetPlayerDamageEffects();
       setNoDamage();
+
+      this.spawnmanager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
     }
 
     public void ResetPlayer()
@@ -212,6 +220,16 @@ namespace vio.spaceshooter.game.player
       this.transform.Find("Player_Damage_B_2").gameObject.SetActive(true);
       this.transform.Find("Player_Damage_B_3").gameObject.SetActive(true);
       this.transform.Find("Player_Damage_B_4").gameObject.SetActive(true);
+    }
+
+    public void fireShockwave()
+    {
+      GameObject newShockwave = MonoBehaviour.Instantiate(
+        this.shockwaveFab,
+        this.transform.position,
+        Quaternion.identity
+      );
+      spawnmanager.ExplodeEnemies();
     }
 
   }
