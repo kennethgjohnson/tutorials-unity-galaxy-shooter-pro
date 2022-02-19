@@ -14,6 +14,9 @@ namespace vio.spaceshooter.game.spawnmanager
     private GameObject[] powerupPrefabs;
 
     [SerializeField]
+    private GameObject universalBombPowerup;
+
+    [SerializeField]
     private GameObject astroidPrefab;
 
     [SerializeField]
@@ -37,6 +40,10 @@ namespace vio.spaceshooter.game.spawnmanager
     private const float MAX_ASTROID_SPAWN_SPEED = 10f;
     private const float MIN_ASTROID_SPAWN_SPEED = 2f;
 
+    private const ushort MIN_ENEMIES_FOR_ALLOW_BOMB = 7;
+    private const float MAX_UNIVERSALBOMB_SPAWN_SPEED = 10f;
+    private const float MIN_UNIVERSALBOMB_SPAWN_SPEED = 7f;
+
     private int difficultyLevel = 0;
 
     GameObject astroidContainer;
@@ -47,17 +54,18 @@ namespace vio.spaceshooter.game.spawnmanager
     IEnumerator enemySpawner;
     IEnumerator powerupSpawner;
     IEnumerator astroidSpawner;
+    IEnumerator universalBombSpawner;
 
     private bool isSpawningActive = false;
 
 
     void Start()
     {
-
       this.startSpawning(); // Setting this after starting the co-routine doesnt work.
       this.initEnemySpawning();
       this.initPowerupsSpawning();
       this.initAstroidSpawning();
+      this.initUniversalBombSpawning();
     }
 
     public void startSpawning()
@@ -89,12 +97,12 @@ namespace vio.spaceshooter.game.spawnmanager
           if (this.difficultyLevel == 3)
           {
             GameObject enemyInstance = this.spawnPrefabTop(this.enemyPrefab, this.enemyContainer);
-            if (UnityEngine.Random.Range(1, 10) > 3)
+            if (UnityEngine.Random.Range(1, 11) > 3)
             {
               enemyInstance.GetComponent<Enemy>().SetDifficultyLevel(this.difficultyLevel);
             }
             enemyInstance = this.spawnPrefabTop(this.enemyPrefab, this.enemyContainer);
-            if (UnityEngine.Random.Range(1, 10) > 3)
+            if (UnityEngine.Random.Range(1, 11) > 3)
             {
               enemyInstance.GetComponent<Enemy>().SetDifficultyLevel(this.difficultyLevel);
             }
@@ -102,7 +110,7 @@ namespace vio.spaceshooter.game.spawnmanager
           else
           {
             GameObject enemyInstance = this.spawnPrefabTop(this.enemyPrefab, this.enemyContainer);
-            if (UnityEngine.Random.Range(1, 10) > 3)
+            if (UnityEngine.Random.Range(1, 11) > 3)
             {
               enemyInstance.GetComponent<Enemy>().SetDifficultyLevel(this.difficultyLevel);
             }
@@ -183,7 +191,7 @@ namespace vio.spaceshooter.game.spawnmanager
       yield return new WaitForSeconds(UnityEngine.Random.Range(MIN_POWERUP_SPAWN_SPEED, MAX_POWERUP_SPAWN_SPEED));
       while (this.isSpawningActive)
       {
-        int powerupNumber = UnityEngine.Random.Range(0, 4);
+        int powerupNumber = UnityEngine.Random.Range(0, 3);
         GameObject powerupPrefab = powerupPrefabs[powerupNumber];
         this.spawnPrefabTop(powerupPrefab, this.powerupContainer);
         yield return new WaitForSeconds(UnityEngine.Random.Range(MIN_POWERUP_SPAWN_SPEED, MAX_POWERUP_SPAWN_SPEED));
@@ -263,6 +271,27 @@ namespace vio.spaceshooter.game.spawnmanager
     {
       yield return new WaitForSeconds(delay);
       enemy.selfDestruct();
+    }
+
+    private void initUniversalBombSpawning()
+    {
+      this.universalBombSpawner = SpawnUniversalBombRoutine();
+      StartCoroutine(this.universalBombSpawner);
+    }
+
+    IEnumerator SpawnUniversalBombRoutine()
+    {
+      yield return new WaitForSeconds(UnityEngine.Random.Range(MIN_UNIVERSALBOMB_SPAWN_SPEED, MAX_UNIVERSALBOMB_SPAWN_SPEED));
+      while (this.isSpawningActive)
+      {
+        if ((this.enemyContainer.transform.childCount > MIN_ENEMIES_FOR_ALLOW_BOMB) && (this.difficultyLevel > 1))
+        {
+          if (UnityEngine.Random.Range(0, 10) > 2) {
+            this.spawnPrefabTop(this.universalBombPowerup, this.powerupContainer);
+          }
+        }
+        yield return new WaitForSeconds(UnityEngine.Random.Range(MIN_UNIVERSALBOMB_SPAWN_SPEED, MAX_UNIVERSALBOMB_SPAWN_SPEED));
+      }
     }
 
 

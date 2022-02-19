@@ -143,7 +143,7 @@ namespace vio.spaceshooter.game.enemy
           break;
 
         case "Enemy":
-          if (UnityEngine.Random.Range(1, 5)==2) {
+          if (UnityEngine.Random.Range(1, 5) == 2) {
             this.updateCount = this.updateCount - 315;
           }
           break;
