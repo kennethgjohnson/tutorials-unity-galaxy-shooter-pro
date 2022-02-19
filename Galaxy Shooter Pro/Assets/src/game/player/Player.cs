@@ -121,7 +121,7 @@ namespace vio.spaceshooter.game.player
       //this.speed = this.speed * UnityEngine.Random.Range(0f, 0.25f);
       //We begin exloding.
       this.GetComponent<PolygonCollider2D>().enabled = false;
-      this.GetComponent<Animator>().SetTrigger("OnPlayerDeath");
+      this.GetComponent<Animator>().SetTrigger("OnPlayerDeath");      
       foreach (PlayerThruster pt in this.GetComponentsInChildren<PlayerThruster>())
       {
         pt.gameObject.SetActive(false);
