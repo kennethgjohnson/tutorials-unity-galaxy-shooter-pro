@@ -13,12 +13,15 @@ namespace vio.spaceshooter.game.powerups {
     private Player player = null;
     private PlayerWeapon playerOriginalWeapon = null;
 
+    [SerializeField]
+    private AudioClip audioClip;
     protected override void applyPowerupToPlayer(Player player)
     {
       this.player = player;
       this.playerOriginalWeapon = player.GetWeapon();
-      player.SetWeapon(new TripleShotLaserCannon(player, this.weaponPrefab));
+      player.SetWeapon(new TripleShotLaserCannon(player, this.weaponPrefab, player.getAudioSource(), player.getLaserAudioClip()));
       player.StartCoroutine(PowerdownRoutine());
+      player.playAudioClip(this.audioClip);
     }
 
     IEnumerator PowerdownRoutine()

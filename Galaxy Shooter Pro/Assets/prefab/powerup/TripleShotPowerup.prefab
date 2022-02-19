@@ -72,7 +72,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1093229875
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ed6681d697652144a913093bf7ad1d43, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -136,6 +136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponPrefab: {fileID: 2704102175860962710, guid: f33fc5bec4330ff46bf6a990ebacc12a,
     type: 3}
+  audioClip: {fileID: 8300000, guid: 13888fba567341c42be51f0ac991379e, type: 3}
 --- !u!95 &2013014650135218632
 Animator:
   serializedVersion: 3

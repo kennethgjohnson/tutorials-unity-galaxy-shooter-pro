@@ -32,8 +32,8 @@ namespace vio.spaceshooter.game.spawnmanager
 
     private const ushort MAX_ENEMIES = 20;
 
-    private const float MAX_POWERUP_SPAWN_SPEED = 3f;
-    private const float MIN_POWERUP_SPAWN_SPEED = 3f;
+    private const float MAX_POWERUP_SPAWN_SPEED = 7f;
+    private const float MIN_POWERUP_SPAWN_SPEED = 11f;
 
     private const ushort MAX_ASTROIDS = 2;
 

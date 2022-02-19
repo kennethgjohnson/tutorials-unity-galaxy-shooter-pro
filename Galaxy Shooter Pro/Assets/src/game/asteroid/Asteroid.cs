@@ -18,6 +18,7 @@ namespace vio.spaceshooter.game.asteroid
     private Game game;
     private PolygonCollider2D objectCollider;
     private Animator animator;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -109,14 +110,15 @@ namespace vio.spaceshooter.game.asteroid
       {
         player.Damage(this.gameObject, this.damageAmount);
       }
-      this.objectCollider.enabled = false;
-      this.animator.SetTrigger("OnAsteroidDestroyed");
+      this.asteroidDestroyed();
     }
 
     private void asteroidDestroyed()
     {
       this.objectCollider.enabled = false;
       this.animator.SetTrigger("OnAsteroidDestroyed");
+      AudioSource audioSource = this.GetComponent<AudioSource>();
+      if (audioSource != null) audioSource.PlayOneShot(audioSource.clip);
     }
 
     public void OnAsteroidDestroyedComplete()
@@ -129,8 +131,7 @@ namespace vio.spaceshooter.game.asteroid
       this.asteroidLife -= damage;
       if (this.asteroidLife<1)
       {
-        this.objectCollider.enabled = false;
-        this.animator.SetTrigger("OnAsteroidDestroyed");
+        this.asteroidDestroyed();
       }
     }
   }

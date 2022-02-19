@@ -15,13 +15,16 @@ namespace vio.spaceshooter.game.powerups
     private Player player = null;
     private PlayerWeapon playerOriginalWeapon = null;
 
+    [SerializeField]
+    private AudioClip audioClip;
     protected override void applyPowerupToPlayer(Player player)
     {
       this.player = player;
       this.playerOriginalWeapon = player.GetWeapon();
       player.BoostSpeed(BOOST_SPEED);
-      player.SetWeapon(new LaserCannonFast(player, this.weaponPrefab));
+      player.SetWeapon(new LaserCannonFast(player, this.weaponPrefab, player.getAudioSource(), player.getLaserAudioClip()));
       //player.StartCoroutine(PowerdownSpeedBoost());
+      player.playAudioClip(this.audioClip);
     }
     
     IEnumerator PowerdownSpeedBoost()

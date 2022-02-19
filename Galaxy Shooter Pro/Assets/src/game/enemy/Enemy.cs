@@ -158,24 +158,25 @@ namespace vio.spaceshooter.game.enemy
 
     public void selfDestruct()
     {
+      AudioSource audioSource = this.GetComponent<AudioSource>();
+      audioSource.PlayOneShot(audioSource.clip);
       this.game.IncreaseScore(10);
-      this.speed = this.speed * UnityEngine.Random.Range(0f, 0.5f);
-      if (this.objectCollider != null) this.objectCollider.enabled = false;
-      if (this.animator != null) this.animator.SetTrigger("OnEnemyDeath");
-      if (this.transform != null)
-      {
-        Transform leftThruster = this.transform.Find("Left_Thruster");
-        if (leftThruster != null)
-        {
-          if (leftThruster.gameObject != null) Destroy(leftThruster.gameObject);
-        }
-        Transform rightThruster = this.transform.Find("Right_Thruster");
-        if (rightThruster != null) {
-          if (rightThruster.gameObject != null) Destroy(rightThruster.gameObject);
-        }
-      }
+      this.explode();
+    }
 
-      if (this.gameObject != null) Destroy(this.gameObject, 1.1f);
+    private void explode()
+    {
+      AudioSource audioSource = this.GetComponent<AudioSource>();
+      if (audioSource!=null) audioSource.PlayOneShot(audioSource.clip);
+      this.speed = this.speed * UnityEngine.Random.Range(0f, 0.25f);
+      if (this.objectCollider!=null) this.objectCollider.enabled = false;
+      if (this.animator != null) this.animator.SetTrigger("OnEnemyDeath");
+
+      Transform leftThruster = this.transform.Find("Left_Thruster");
+      if (leftThruster != null) Destroy(leftThruster.gameObject);
+      Transform rightThruster = this.transform.Find("Right_Thruster");
+      if (rightThruster != null) Destroy(rightThruster.gameObject);
+      Destroy(this.gameObject, 1.1f);
     }
 
     private void playerHit(Collider2D other)
@@ -185,17 +186,10 @@ namespace vio.spaceshooter.game.enemy
       {
         player.Damage(this.gameObject, this.damageAmount);
       }
-
-      this.speed = this.speed * UnityEngine.Random.Range(0f, 0.25f);
-      this.objectCollider.enabled = false;
-      this.animator.SetTrigger("OnEnemyDeath");
-
-      Destroy(this.transform.Find("Left_Thruster").gameObject);
-      Destroy(this.transform.Find("Right_Thruster").gameObject);
-      Destroy(this.gameObject, 1.1f);
+      this.explode();
     }
 
-      private void asteroidHit(Collider2D other)
+    private void asteroidHit(Collider2D other)
     {
       if (other != null) {
         Asteroid asteroid = other.GetComponent<Asteroid>();
@@ -204,13 +198,7 @@ namespace vio.spaceshooter.game.enemy
           asteroid.Damage(this.damageAmount);
         }
       }
-      this.speed = this.speed * UnityEngine.Random.Range(0f, 0.25f);
-      if (this.objectCollider!=null) this.objectCollider.enabled = false;
-      this.animator.SetTrigger("OnEnemyDeath");
-
-      Destroy(this.transform.Find("Left_Thruster").gameObject);
-      Destroy(this.transform.Find("Right_Thruster").gameObject);
-      Destroy(this.gameObject, 1.1f);
+      this.explode();
     }
 
     public void SetDifficultyLevel(int level)

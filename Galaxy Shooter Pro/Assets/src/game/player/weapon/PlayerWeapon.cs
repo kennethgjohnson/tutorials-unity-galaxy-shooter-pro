@@ -6,10 +6,15 @@ namespace vio.spaceshooter.game.player.weapon
   {
     protected GameObject weaponPrefab;
     protected Player player;
-    public PlayerWeapon(Player player, GameObject weaponPrefab)
+
+    protected AudioSource audioSource;
+    protected AudioClip audioClip;
+    public PlayerWeapon(Player player, GameObject weaponPrefab, AudioSource audioSource, AudioClip audioClip)
     {
       this.player = player;
-      this.weaponPrefab = weaponPrefab;      
+      this.weaponPrefab = weaponPrefab;
+      this.audioSource = audioSource;
+      this.audioClip = audioClip;
     }
 
     abstract public void AttemptFire();

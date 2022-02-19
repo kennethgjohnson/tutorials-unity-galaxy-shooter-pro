@@ -5,11 +5,17 @@ using UnityEngine;
 public class Shockwave : MonoBehaviour
 {
     private float GROWTH_RATE = 2.5f;
-    // Update is called once per frame
-    void Update()
+
+  private void Start()
+  {
+    AudioSource audioSource = this.GetComponent<AudioSource>();
+    audioSource.PlayOneShot(audioSource.clip);
+  }
+
+  void Update()
     {
     float scale = this.transform.localScale.x + GROWTH_RATE * Time.deltaTime;
-    if (scale > 4)
+    if (scale > 16)
     {
       Destroy(this.gameObject);
     }

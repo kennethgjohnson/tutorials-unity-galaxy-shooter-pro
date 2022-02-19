@@ -44,9 +44,23 @@ namespace vio.spaceshooter.game.player
     private int damageLevel = 0;
 
     private SpawnManager spawnmanager;
+    private AudioSource audioSource;
+
+    [SerializeField]
+    private AudioClip laserAudioClip;
+
+    [SerializeField]
+    private AudioClip explosionClip;
+
+    [SerializeField]
+    private AudioClip shieldsOnClip;
+
+    [SerializeField]
+    private AudioClip shieldsOffClip;
 
     void Start()
     {
+      this.audioSource = this.GetComponent<AudioSource>();
       this.game = GameObject.Find("Game").GetComponent<Game>();
       
       this.playerMovementHandler
@@ -58,18 +72,19 @@ namespace vio.spaceshooter.game.player
           )
         );
       this.playerActionHandler = new PlayerActionsHandler(this);
-      this.weapon = new LaserCannon(this, this.laser);
+      this.weapon = new LaserCannon(this, this.laser, this.audioSource, this.laserAudioClip);
       this.transform.position = new Vector3(0, 0, 0);
       SetPlayerDamageEffects();
       setNoDamage();
 
       this.spawnmanager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+      
     }
 
     public void ResetPlayer()
     {
       damageLevel = 0;
-      this.weapon = new LaserCannon(this, this.laser);
+      this.weapon = new LaserCannon(this, this.laser, this.audioSource, this.laserAudioClip);
       this.transform.position = new Vector3(0, 0, 0);
       this.ResetSpeed();
       this.deactivateShields();
@@ -120,6 +135,8 @@ namespace vio.spaceshooter.game.player
     {
       //this.speed = this.speed * UnityEngine.Random.Range(0f, 0.25f);
       //We begin exloding.
+      this.playAudioClip(this.explosionClip,2.5f);
+      
       this.GetComponent<PolygonCollider2D>().enabled = false;
       this.GetComponent<Animator>().SetTrigger("OnPlayerDeath");      
       foreach (PlayerThruster pt in this.GetComponentsInChildren<PlayerThruster>())
@@ -128,6 +145,11 @@ namespace vio.spaceshooter.game.player
       }
       setNoDamage();
       this.isExploding = true;
+    }
+
+    public void playAudioClip(AudioClip clip, float volumeScale = 1)
+    {
+      audioSource.PlayOneShot(clip,volumeScale);
     }
 
     private void OnPlayerDeathComplete()
@@ -160,6 +182,7 @@ namespace vio.spaceshooter.game.player
     public void EnableShields()
     {
       if (this.isShieldsActive) return;
+      this.playAudioClip(this.shieldsOnClip,2);
       this.isShieldsActive = true;
       this.playerShieldsEffect.SetActive(true);
       this.fakePlayerShieldsEffect.SetActive(true);
@@ -167,6 +190,7 @@ namespace vio.spaceshooter.game.player
 
     private void deactivateShields()
     {
+      this.playAudioClip(this.shieldsOffClip,2);
       this.isShieldsActive = false;
       this.playerShieldsEffect.SetActive(false);
       this.fakePlayerShieldsEffect.SetActive(false);
@@ -230,6 +254,16 @@ namespace vio.spaceshooter.game.player
         Quaternion.identity
       );
       spawnmanager.ExplodeEnemies();
+    }
+
+    public AudioSource getAudioSource()
+    {
+      return this.audioSource;
+    }
+
+    public AudioClip getLaserAudioClip()
+    {
+      return this.laserAudioClip;
     }
 
   }

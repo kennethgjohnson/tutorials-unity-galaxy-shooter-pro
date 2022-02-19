@@ -8,7 +8,7 @@ namespace vio.spaceshooter.game.player.weapon
     protected float rateOfFire = 150f;
     private float nextFireTime = 0f;
 
-    public LaserCannon(Player player, GameObject weaponPrefab) : base(player,weaponPrefab)
+    public LaserCannon(Player player, GameObject weaponPrefab, AudioSource audioSource, AudioClip audioClip) : base(player,weaponPrefab,audioSource,audioClip)
     {
     }
 
@@ -16,6 +16,7 @@ namespace vio.spaceshooter.game.player.weapon
     {
       if (this.isReadToFire()) {
         this.fireLaser();
+        this.playLaserSound();
         this.setNextFireTimeCooldown();
       }
     }
@@ -33,6 +34,15 @@ namespace vio.spaceshooter.game.player.weapon
                 this.player.transform.position + Vector3.up * LASER_STARTING_OFFSET,
                 Quaternion.identity
               );
+    }
+
+    private void playLaserSound()
+    {
+      if (this.audioSource.clip!=this.audioClip)
+      {
+        this.audioSource.clip = this.audioClip;
+      }
+      this.audioSource.PlayOneShot(this.audioSource.clip);
     }
 
     private void setNextFireTimeCooldown()
