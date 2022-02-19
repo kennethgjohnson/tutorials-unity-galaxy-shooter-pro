@@ -73,6 +73,10 @@ namespace vio.spaceshooter.game
       {
         this.setDifficulty(3);
       }
+      if ((this.score >= 2000) && (this.difficulty == 3))
+      {
+        this.setDifficulty(4);
+      }
     }
 
     private void setDifficulty(int difficulty)

@@ -8,7 +8,6 @@ public class Shockwave : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-    Debug.Log(this.transform.localScale.x);
     float scale = this.transform.localScale.x + GROWTH_RATE * Time.deltaTime;
     if (scale > 4)
     {

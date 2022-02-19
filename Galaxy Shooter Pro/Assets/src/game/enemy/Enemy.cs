@@ -186,12 +186,13 @@ namespace vio.spaceshooter.game.enemy
 
       private void asteroidHit(Collider2D other)
     {
-      Asteroid asteroid = other.GetComponent<Asteroid>();
-      if (asteroid != null)
-      {
-        asteroid.Damage(this.damageAmount);
+      if (other != null) {
+        Asteroid asteroid = other.GetComponent<Asteroid>();
+        if (asteroid != null)
+        {
+          asteroid.Damage(this.damageAmount);
+        }
       }
-
       this.speed = this.speed * UnityEngine.Random.Range(0f, 0.25f);
       if (this.objectCollider!=null) this.objectCollider.enabled = false;
       this.animator.SetTrigger("OnEnemyDeath");

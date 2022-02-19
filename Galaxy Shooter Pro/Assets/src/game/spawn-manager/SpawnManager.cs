@@ -96,26 +96,17 @@ namespace vio.spaceshooter.game.spawnmanager
         {
           if (this.difficultyLevel == 3)
           {
-            GameObject enemyInstance = this.spawnPrefabTop(this.enemyPrefab, this.enemyContainer);
-            if (UnityEngine.Random.Range(1, 11) > 3)
-            {
-              enemyInstance.GetComponent<Enemy>().SetDifficultyLevel(this.difficultyLevel);
-            }
-            enemyInstance = this.spawnPrefabTop(this.enemyPrefab, this.enemyContainer);
-            if (UnityEngine.Random.Range(1, 11) > 3)
-            {
-              enemyInstance.GetComponent<Enemy>().SetDifficultyLevel(this.difficultyLevel);
-            }
+            this.spawnEnemiesRandomDifficulty((ushort) UnityEngine.Random.Range(1, this.difficultyLevel));
+          } else if (this.difficultyLevel == 4)
+          {
+            this.spawnEnemiesMaxDifficulty((ushort) UnityEngine.Random.Range(1, this.difficultyLevel));
           }
           else
           {
-            GameObject enemyInstance = this.spawnPrefabTop(this.enemyPrefab, this.enemyContainer);
-            if (UnityEngine.Random.Range(1, 11) > 3)
-            {
-              enemyInstance.GetComponent<Enemy>().SetDifficultyLevel(this.difficultyLevel);
-            }
+            this.spawnEnemiesRandomDifficulty(1);
           }
-          //yield return new WaitForSeconds(MAX_ENEMY_SPAWN_SPEED*5000);
+
+          //How long to wait till spawn more again
           if (this.difficultyLevel == 0)
           {
             yield return new WaitForSeconds(UnityEngine.Random.Range(MIN_ENEMY_SPAWN_SPEED, MAX_ENEMY_SPAWN_SPEED));
@@ -128,7 +119,7 @@ namespace vio.spaceshooter.game.spawnmanager
           {
             yield return new WaitForSeconds(UnityEngine.Random.Range(0.25f, 1f));
           }
-          if (this.difficultyLevel == 3)
+          if (this.difficultyLevel >= 3)
           {
             yield return new WaitForSeconds(UnityEngine.Random.Range(0.25f, 0.8f));
           }
@@ -137,6 +128,31 @@ namespace vio.spaceshooter.game.spawnmanager
         {
           yield return new WaitForSeconds(0.25f);
         }
+      }
+    }
+
+    private void spawnEnemiesMaxDifficulty(ushort enemiesToSpawnCount)
+    {
+      GameObject enemyInstance;
+      for (int i = 0; i < enemiesToSpawnCount; i++)
+      {
+        enemyInstance = this.spawnPrefabTop(this.enemyPrefab, this.enemyContainer);
+        ushort randomDiff = (ushort)UnityEngine.Random.Range(0, 11);
+        if (randomDiff > 3) randomDiff = 3;
+        enemyInstance.GetComponent<Enemy>().SetDifficultyLevel(randomDiff);
+      }
+    }
+
+
+    private void spawnEnemiesRandomDifficulty(ushort enemiesToSpawnCount)
+    {
+      GameObject enemyInstance;
+      for (int i = 0; i < enemiesToSpawnCount; i++)
+      {
+        enemyInstance = this.spawnPrefabTop(this.enemyPrefab, this.enemyContainer);
+        ushort randomDiff = (ushort)UnityEngine.Random.Range(0, this.difficultyLevel);
+        if (randomDiff > 3) randomDiff = 3;
+        enemyInstance.GetComponent<Enemy>().SetDifficultyLevel(randomDiff);
       }
     }
 
@@ -167,10 +183,8 @@ namespace vio.spaceshooter.game.spawnmanager
         if (enemy.transform.position.y > 10)
         {
           float distance = Vector3.Distance(enemy.transform.position, position);
-          //Debug.Log("distance:" + distance);
           if ((distance < 2) && (distance > -2))
           {
-            //Debug.Log("collision detected");
             return true;
           }
         }
@@ -270,7 +284,7 @@ namespace vio.spaceshooter.game.spawnmanager
     IEnumerator SelfDestructorRoutine(float delay, Enemy enemy)
     {
       yield return new WaitForSeconds(delay);
-      enemy.selfDestruct();
+      if (enemy!=null) enemy.selfDestruct();
     }
 
     private void initUniversalBombSpawning()
