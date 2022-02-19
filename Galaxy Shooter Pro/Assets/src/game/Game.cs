@@ -95,6 +95,7 @@ namespace vio.spaceshooter.game
       this.lives--;
       if (this.lives <= 0)
       {
+        this.lives = 0;
         this.gameOver();
       }
       this.GetComponentInChildren<UI>().UpdateLives(this.lives);

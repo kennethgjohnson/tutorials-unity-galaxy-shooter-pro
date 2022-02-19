@@ -160,11 +160,22 @@ namespace vio.spaceshooter.game.enemy
     {
       this.game.IncreaseScore(10);
       this.speed = this.speed * UnityEngine.Random.Range(0f, 0.5f);
-      this.objectCollider.enabled = false;
-      this.animator.SetTrigger("OnEnemyDeath");
-      Destroy(this.transform.Find("Left_Thruster").gameObject);
-      Destroy(this.transform.Find("Right_Thruster").gameObject);
-      Destroy(this.gameObject, 1.1f);
+      if (this.objectCollider != null) this.objectCollider.enabled = false;
+      if (this.animator != null) this.animator.SetTrigger("OnEnemyDeath");
+      if (this.transform != null)
+      {
+        Transform leftThruster = this.transform.Find("Left_Thruster");
+        if (leftThruster != null)
+        {
+          if (leftThruster.gameObject != null) Destroy(leftThruster.gameObject);
+        }
+        Transform rightThruster = this.transform.Find("Right_Thruster");
+        if (rightThruster != null) {
+          if (rightThruster.gameObject != null) Destroy(rightThruster.gameObject);
+        }
+      }
+
+      if (this.gameObject != null) Destroy(this.gameObject, 1.1f);
     }
 
     private void playerHit(Collider2D other)
