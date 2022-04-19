@@ -24,6 +24,9 @@ namespace vio.spaceshooter.game
     [SerializeField]
     private Image livesImage;
 
+    [SerializeField]
+    private GameObject pauseMenu;
+
     public void UpdateScore(int score)
     {
       this.scoreLabel.text = SCORE_LABEL
@@ -64,5 +67,14 @@ namespace vio.spaceshooter.game
     {
       this.gameoverLabel.enabled = !this.gameoverLabel.enabled;
     }
+    public void ShowPauseMenu()
+    {
+      this.pauseMenu.SetActive(true);
+    }
+    public void HidePauseMenu()
+    {
+      this.pauseMenu.SetActive(false);
+    }
+
   }
 }

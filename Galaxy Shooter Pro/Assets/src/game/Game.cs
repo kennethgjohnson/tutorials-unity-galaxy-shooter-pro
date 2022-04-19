@@ -10,8 +10,9 @@ namespace vio.spaceshooter.game
     private int score = 0;
     private int lives = 0;
     private bool isGameOver = false;
+    private bool isPaused = false;
     private int difficulty = 0;
-
+    private bool isEscapeDown = false;
     SpawnManager spawnManager;
 
     // Start is called before the first frame update
@@ -21,7 +22,9 @@ namespace vio.spaceshooter.game
       this.ResetLives();
       this.ResetScore();
       this.isGameOver = false;
+      this.isPaused = false;
       this.GetComponentInChildren<UI>().HideGameOver();
+      this.GetComponentInChildren<UI>().HidePauseMenu();
     }
 
     public void Update()
@@ -33,8 +36,17 @@ namespace vio.spaceshooter.game
 
       if (Input.GetKey(KeyCode.Escape) && this.isGameOver)
       {
-        this.returnToMainMenu();
+        this.ReturnToMainMenu();
       }
+
+      if (Input.GetKey(KeyCode.Escape) && !this.isGameOver && !this.isPaused && !this.isEscapeDown)
+      {
+        this.pauseGameAndShowMenu();
+      } else if (Input.GetKey(KeyCode.Escape) && !this.isGameOver && this.isPaused && !this.isEscapeDown)
+      {
+        this.ResumeGame();
+      }
+      this.isEscapeDown = (Input.GetKey(KeyCode.Escape));
     }
 
     private void restartGame()
@@ -42,9 +54,16 @@ namespace vio.spaceshooter.game
       SceneManager.LoadScene(Constants.GAME_SCENE_INDEX);
     }
 
-    public void returnToMainMenu()
+    public void ReturnToMainMenu()
     {
       SceneManager.LoadScene(Constants.MAIN_MENU_SCENE_INDEX);
+    }
+
+    private void pauseGameAndShowMenu()
+    {
+      this.isPaused = true;
+      Time.timeScale = 0f;
+      this.GetComponentInChildren<UI>().ShowPauseMenu();
     }
 
     public void ResetLives()
@@ -112,6 +131,19 @@ namespace vio.spaceshooter.game
     public int GetLives()
     {
       return this.lives;
+    }
+
+    public void ExitToTitleScreen()
+    {
+      Time.timeScale = 1f;
+      this.ReturnToMainMenu();
+    }
+
+    public void ResumeGame()
+    {
+      this.isPaused = false;
+      this.GetComponentInChildren<UI>().HidePauseMenu();
+      Time.timeScale = 1f;
     }
   }
 }
